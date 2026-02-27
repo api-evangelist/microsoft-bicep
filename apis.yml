@@ -1,0 +1,86 @@
+name: Microsoft Bicep
+description: 'Microsoft Bicep is a domain-specific language (DSL) that uses declarative syntax  to deploy Azure resources. It provides a transparent abstraction over ARM templates  and offers a more concise syntax, improved type safety, and better support for  modularity and code reuse.
+
+  '
+image: https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/media/bicep-logo.png
+url: https://github.com/Azure/bicep
+created: '2024-01-15'
+modified: '2024-01-15'
+specificationVersion: '0.18'
+tags:
+- Infrastructure as Code
+- Azure
+- ARM Templates
+- Cloud
+- Deployment
+- DevOps
+apis:
+- name: Bicep CLI
+  description: Command-line interface for compiling and deploying Bicep files
+  image: https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/media/bicep-logo.png
+  baseURL: https://github.com/Azure/bicep
+  humanURL: https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/
+  properties:
+  - type: Documentation
+    url: https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/
+  - type: GitHub Repository
+    url: https://github.com/Azure/bicep
+  - type: Installation Guide
+    url: https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/install
+  - type: Bicep Playground
+    url: https://bicepdemo.z22.web.core.windows.net/
+  contact:
+  - type: GitHub Issues
+    url: https://github.com/Azure/bicep/issues
+  - type: Twitter
+    url: https://twitter.com/Azure
+- name: Bicep Language Server
+  description: Language server implementation for Bicep providing IntelliSense and validation
+  baseURL: https://github.com/Azure/bicep
+  humanURL: https://github.com/Azure/bicep/tree/main/src/Bicep.LangServer
+  properties:
+  - type: Documentation
+    url: https://github.com/Azure/bicep/blob/main/docs/contributing/language-server.md
+  - type: GitHub Repository
+    url: https://github.com/Azure/bicep/tree/main/src/Bicep.LangServer
+  - type: VS Code Extension
+    url: https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep
+- name: Bicep REST API
+  description: REST API for Bicep module registry and template specs
+  baseURL: https://management.azure.com
+  humanURL: https://docs.microsoft.com/en-us/rest/api/resources/
+  properties:
+  - type: API Documentation
+    url: https://docs.microsoft.com/en-us/rest/api/resources/deployments
+  - type: OpenAPI Specification
+    url: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager
+  - type: Authentication
+    url: https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/authentication
+maintainers:
+- name: Microsoft Azure
+  email: azdevrel@microsoft.com
+  url: https://azure.microsoft.com
+common:
+- type: GitHub Organization
+  url: https://github.com/Azure
+- type: Blog
+  url: https://devblogs.microsoft.com/azure-sdk/
+- type: Support
+  url: https://docs.microsoft.com/en-us/answers/topics/azure-bicep.html
+- type: Learning Resources
+  url: https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/learn-bicep
+- type: Bicep Examples
+  url: https://github.com/Azure/bicep/tree/main/docs/examples
+- type: Release Notes
+  url: https://github.com/Azure/bicep/releases
+- type: Contributing Guide
+  url: https://github.com/Azure/bicep/blob/main/CONTRIBUTING.md
+- type: License
+  url: https://github.com/Azure/bicep/blob/main/LICENSE
+include:
+- name: Azure Resource Manager APIs
+  url: https://management.azure.com
+- name: Azure Template Specs
+  url: https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs
+- name: Azure Container Registry (for Bicep modules)
+  url: https://azure.microsoft.com/en-us/services/container-registry/
