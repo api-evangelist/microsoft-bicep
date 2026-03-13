@@ -1,0 +1,306 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://management.azure.com/schemas/microsoft-bicep/deployment.json",
+  "title": "Microsoft Bicep Deployment",
+  "description": "An Azure Resource Manager deployment created from a compiled Bicep template. Represents the deployment operation including the template, parameters, mode, and resulting provisioning state.",
+  "type": "object",
+  "required": ["properties"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "readOnly": true,
+      "description": "The fully qualified Azure resource ID of the deployment"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[-\\w\\.\\_\\(\\)]+$",
+      "description": "The name of the deployment"
+    },
+    "type": {
+      "type": "string",
+      "const": "Microsoft.Resources/deployments",
+      "description": "The resource type"
+    },
+    "location": {
+      "type": "string",
+      "description": "The location to store the deployment data"
+    },
+    "tags": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Deployment tags"
+    },
+    "properties": {
+      "$ref": "#/$defs/DeploymentProperties"
+    },
+    "identity": {
+      "$ref": "#/$defs/DeploymentIdentity"
+    }
+  },
+  "$defs": {
+    "DeploymentProperties": {
+      "type": "object",
+      "required": ["mode"],
+      "description": "Deployment properties defining the template, parameters, and deployment behavior",
+      "properties": {
+        "template": {
+          "type": "object",
+          "description": "The compiled Bicep/ARM template content provided inline"
+        },
+        "templateLink": {
+          "$ref": "#/$defs/TemplateLink"
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/DeploymentParameter"
+          },
+          "description": "Name and value pairs defining deployment parameters"
+        },
+        "parametersLink": {
+          "$ref": "#/$defs/ParametersLink"
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["Incremental", "Complete"],
+          "description": "The deployment mode. Incremental adds resources without deleting existing ones. Complete deletes resources not in the template."
+        },
+        "provisioningState": {
+          "type": "string",
+          "readOnly": true,
+          "enum": [
+            "NotSpecified",
+            "Accepted",
+            "Running",
+            "Ready",
+            "Creating",
+            "Created",
+            "Deleting",
+            "Deleted",
+            "Canceled",
+            "Failed",
+            "Succeeded",
+            "Updating"
+          ],
+          "description": "The state of provisioning for the deployment"
+        },
+        "correlationId": {
+          "type": "string",
+          "readOnly": true,
+          "description": "The correlation ID of the deployment for tracking"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true,
+          "description": "The timestamp of the template deployment"
+        },
+        "duration": {
+          "type": "string",
+          "readOnly": true,
+          "description": "The duration of the template deployment in ISO 8601 format"
+        },
+        "outputs": {
+          "type": "object",
+          "readOnly": true,
+          "description": "Key/value pairs that represent deployment output"
+        },
+        "templateHash": {
+          "type": "string",
+          "readOnly": true,
+          "description": "The hash produced for the compiled template"
+        },
+        "outputResources": {
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/$defs/ResourceReference"
+          },
+          "description": "Array of provisioned resource IDs"
+        },
+        "validatedResources": {
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/$defs/ResourceReference"
+          },
+          "description": "Array of validated resource IDs"
+        },
+        "debugSetting": {
+          "type": "object",
+          "properties": {
+            "detailLevel": {
+              "type": "string",
+              "description": "Specifies the type of information to log for debugging"
+            }
+          }
+        },
+        "onErrorDeployment": {
+          "$ref": "#/$defs/OnErrorDeployment"
+        },
+        "expressionEvaluationOptions": {
+          "type": "object",
+          "properties": {
+            "scope": {
+              "type": "string",
+              "enum": ["Outer", "Inner", "NotSpecified"],
+              "description": "The scope for evaluating template expressions in nested templates"
+            }
+          }
+        },
+        "validationLevel": {
+          "type": "string",
+          "enum": ["Template", "Provider", "ProviderNoRbac"],
+          "description": "The level of validation performed on the deployment"
+        }
+      }
+    },
+    "TemplateLink": {
+      "type": "object",
+      "description": "Reference to a template located at a URI or Template Spec",
+      "properties": {
+        "uri": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URI of the template to deploy"
+        },
+        "id": {
+          "type": "string",
+          "description": "The resource ID of a Template Spec"
+        },
+        "contentVersion": {
+          "type": "string",
+          "description": "Must match the ContentVersion in the template if included"
+        },
+        "queryString": {
+          "type": "string",
+          "description": "Query string such as a SAS token to use with the templateLink URI"
+        },
+        "relativePath": {
+          "type": "string",
+          "description": "Relative path for deploying linked templates relative to parent"
+        }
+      }
+    },
+    "ParametersLink": {
+      "type": "object",
+      "required": ["uri"],
+      "description": "Reference to deployment parameters located at a URI",
+      "properties": {
+        "uri": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URI of the parameters file"
+        },
+        "contentVersion": {
+          "type": "string",
+          "description": "Must match the ContentVersion in the template if included"
+        }
+      }
+    },
+    "DeploymentParameter": {
+      "type": "object",
+      "description": "A single deployment parameter value, expression, or Key Vault reference",
+      "properties": {
+        "value": {
+          "description": "Direct input value to the parameter"
+        },
+        "reference": {
+          "type": "object",
+          "properties": {
+            "keyVault": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Azure Key Vault resource ID"
+                }
+              },
+              "required": ["id"]
+            },
+            "secretName": {
+              "type": "string",
+              "description": "Azure Key Vault secret name"
+            },
+            "secretVersion": {
+              "type": "string",
+              "description": "Azure Key Vault secret version"
+            }
+          },
+          "description": "Azure Key Vault parameter reference"
+        },
+        "expression": {
+          "type": "string",
+          "description": "Input expression to the parameter"
+        }
+      }
+    },
+    "DeploymentIdentity": {
+      "type": "object",
+      "description": "The Managed Identity configuration for a deployment",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["None", "UserAssigned"],
+          "description": "The identity type"
+        },
+        "userAssignedIdentities": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "clientId": {
+                "type": "string",
+                "format": "uuid",
+                "description": "The client ID of the assigned identity"
+              },
+              "principalId": {
+                "type": "string",
+                "format": "uuid",
+                "description": "The principal ID of the assigned identity"
+              }
+            }
+          },
+          "description": "The set of user assigned identities"
+        }
+      }
+    },
+    "OnErrorDeployment": {
+      "type": "object",
+      "description": "Deployment behavior on error",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["LastSuccessful", "SpecificDeployment"],
+          "description": "The deployment on error behavior type"
+        },
+        "deploymentName": {
+          "type": "string",
+          "description": "The deployment to use on error when type is SpecificDeployment"
+        }
+      }
+    },
+    "ResourceReference": {
+      "type": "object",
+      "description": "Reference to an Azure resource",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The fully qualified Azure resource ID"
+        },
+        "resourceType": {
+          "type": "string",
+          "description": "The resource type"
+        },
+        "apiVersion": {
+          "type": "string",
+          "description": "The API version the resource was deployed with"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://management.azure.com/schemas/microsoft-bicep/template-spec.json",
+  "title": "Microsoft Bicep Template Spec",
+  "description": "An Azure Template Spec resource that stores reusable Bicep/ARM templates as Azure resources. Template Specs provide versioning, sharing, and access control for infrastructure as code templates compiled from Bicep.",
+  "type": "object",
+  "required": ["location"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "readOnly": true,
+      "description": "The fully qualified Azure resource ID of the Template Spec"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 90,
+      "pattern": "^[-\\w\\.\\_\\(\\)]+$",
+      "description": "Name of the Template Spec"
+    },
+    "type": {
+      "type": "string",
+      "const": "Microsoft.Resources/templateSpecs",
+      "description": "The resource type"
+    },
+    "location": {
+      "type": "string",
+      "description": "The Azure location of the Template Spec. Cannot be changed after creation."
+    },
+    "tags": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Resource tags"
+    },
+    "systemData": {
+      "$ref": "#/$defs/SystemData"
+    },
+    "properties": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "maxLength": 4096,
+          "description": "Template Spec description"
+        },
+        "displayName": {
+          "type": "string",
+          "maxLength": 64,
+          "description": "Template Spec display name"
+        },
+        "metadata": {
+          "type": "object",
+          "description": "The Template Spec metadata, typically a collection of key-value pairs"
+        },
+        "versions": {
+          "type": "object",
+          "readOnly": true,
+          "additionalProperties": {
+            "$ref": "#/$defs/TemplateSpecVersionInfo"
+          },
+          "description": "High-level information about the versions within this Template Spec"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "TemplateSpecVersionInfo": {
+      "type": "object",
+      "description": "High-level information about a Template Spec version",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Template Spec version description"
+        },
+        "timeCreated": {
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true,
+          "description": "The timestamp of when the version was created"
+        },
+        "timeModified": {
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true,
+          "description": "The timestamp of when the version was last modified"
+        }
+      }
+    },
+    "TemplateSpecVersion": {
+      "type": "object",
+      "required": ["location", "properties"],
+      "description": "A specific version of a Template Spec containing the compiled template content",
+      "properties": {
+        "id": {
+          "type": "string",
+          "readOnly": true,
+          "description": "The fully qualified Azure resource ID"
+        },
+        "name": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Name of this version"
+        },
+        "type": {
+          "type": "string",
+          "const": "Microsoft.Resources/templateSpecs/versions",
+          "description": "The resource type"
+        },
+        "location": {
+          "type": "string",
+          "description": "The Azure location of the Template Spec version"
+        },
+        "tags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Resource tags"
+        },
+        "systemData": {
+          "$ref": "#/$defs/SystemData"
+        },
+        "properties": {
+          "type": "object",
+          "required": ["mainTemplate"],
+          "properties": {
+            "description": {
+              "type": "string",
+              "maxLength": 4096,
+              "description": "Template Spec version description"
+            },
+            "mainTemplate": {
+              "type": "object",
+              "description": "The main ARM/Bicep compiled template content"
+            },
+            "linkedTemplates": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/LinkedTemplateArtifact"
+              },
+              "description": "Array of linked template artifacts"
+            },
+            "metadata": {
+              "type": "object",
+              "description": "Version metadata, typically a collection of key-value pairs"
+            },
+            "uiFormDefinition": {
+              "type": "object",
+              "description": "Azure portal UI form definition for customizing the deployment experience"
+            }
+          }
+        }
+      }
+    },
+    "LinkedTemplateArtifact": {
+      "type": "object",
+      "required": ["path", "template"],
+      "description": "A linked template artifact within a Template Spec version",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "A filesystem safe relative path of the artifact"
+        },
+        "template": {
+          "type": "object",
+          "description": "The compiled ARM/Bicep template content"
+        }
+      }
+    },
+    "SystemData": {
+      "type": "object",
+      "description": "Metadata pertaining to creation and last modification of the resource",
+      "properties": {
+        "createdBy": {
+          "type": "string",
+          "description": "The identity that created the resource"
+        },
+        "createdByType": {
+          "type": "string",
+          "enum": ["User", "Application", "ManagedIdentity", "Key"],
+          "description": "The type of identity that created the resource"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp of resource creation (UTC)"
+        },
+        "lastModifiedBy": {
+          "type": "string",
+          "description": "The identity that last modified the resource"
+        },
+        "lastModifiedByType": {
+          "type": "string",
+          "enum": ["User", "Application", "ManagedIdentity", "Key"],
+          "description": "The type of identity that last modified the resource"
+        },
+        "lastModifiedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp of resource last modification (UTC)"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,998 @@
+openapi: 3.1.0
+info:
+  title: Microsoft Bicep Deployments API
+  description: >-
+    Azure Resource Manager Deployments REST API used by Microsoft Bicep to deploy
+    infrastructure as code templates. Provides operations for creating, validating,
+    and managing ARM/Bicep template deployments at resource group, subscription,
+    management group, and tenant scopes.
+  version: '2025-04-01'
+  contact:
+    name: Microsoft Azure Support
+    url: https://azure.microsoft.com/en-us/support/
+  license:
+    name: MIT
+    url: https://github.com/Azure/bicep/blob/main/LICENSE
+  termsOfService: https://azure.microsoft.com/en-us/support/legal/
+externalDocs:
+  description: Azure Resource Manager Deployments API Documentation
+  url: https://learn.microsoft.com/en-us/rest/api/resources/deployments
+servers:
+  - url: https://management.azure.com
+    description: Azure Resource Manager Global Endpoint
+tags:
+  - name: Deployments
+    description: Create, validate, and manage ARM/Bicep template deployments
+  - name: Deployment Operations
+    description: Query deployment operation status and details
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}:
+    put:
+      operationId: Deployments_CreateOrUpdate
+      summary: Create or update a deployment
+      description: >-
+        Deploys resources to a resource group using an ARM/Bicep template.
+        You can provide the template directly or link to a template URI or
+        Template Spec.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/resourceGroupName'
+        - $ref: '#/components/parameters/deploymentName'
+        - $ref: '#/components/parameters/apiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Deployment'
+      responses:
+        '200':
+          description: Deployment updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentExtended'
+        '201':
+          description: Deployment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentExtended'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudError'
+    get:
+      operationId: Deployments_Get
+      summary: Get a deployment
+      description: Gets a deployment by name within a resource group.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/resourceGroupName'
+        - $ref: '#/components/parameters/deploymentName'
+        - $ref: '#/components/parameters/apiVersion'
+      responses:
+        '200':
+          description: Deployment details returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentExtended'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudError'
+    delete:
+      operationId: Deployments_Delete
+      summary: Delete a deployment
+      description: >-
+        Deletes a deployment from the deployment history. Does not affect
+        deployed resources.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/resourceGroupName'
+        - $ref: '#/components/parameters/deploymentName'
+        - $ref: '#/components/parameters/apiVersion'
+      responses:
+        '202':
+          description: Accepted - delete operation in progress
+        '204':
+          description: Deployment already deleted
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudError'
+    head:
+      operationId: Deployments_CheckExistence
+      summary: Check deployment existence
+      description: Checks whether a deployment exists in a resource group.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/resourceGroupName'
+        - $ref: '#/components/parameters/deploymentName'
+        - $ref: '#/components/parameters/apiVersion'
+      responses:
+        '204':
+          description: Deployment exists
+        '404':
+          description: Deployment not found
+  /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/validate:
+    post:
+      operationId: Deployments_Validate
+      summary: Validate a deployment template
+      description: >-
+        Validates whether the specified template is syntactically correct and
+        will be accepted by Azure Resource Manager. This is the primary
+        validation endpoint used by the Bicep CLI.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/resourceGroupName'
+        - $ref: '#/components/parameters/deploymentName'
+        - $ref: '#/components/parameters/apiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Deployment'
+      responses:
+        '200':
+          description: Validation succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentValidateResult'
+        '202':
+          description: Accepted - validation in progress
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentValidateResult'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudError'
+  /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/cancel:
+    post:
+      operationId: Deployments_Cancel
+      summary: Cancel a running deployment
+      description: >-
+        Cancels a currently running template deployment. Only deployments
+        in progress can be cancelled.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/resourceGroupName'
+        - $ref: '#/components/parameters/deploymentName'
+        - $ref: '#/components/parameters/apiVersion'
+      responses:
+        '204':
+          description: Deployment cancelled successfully
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudError'
+  /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/exportTemplate:
+    post:
+      operationId: Deployments_ExportTemplate
+      summary: Export a deployment template
+      description: Exports the template used for the specified deployment.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/resourceGroupName'
+        - $ref: '#/components/parameters/deploymentName'
+        - $ref: '#/components/parameters/apiVersion'
+      responses:
+        '200':
+          description: Template exported successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentExportResult'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudError'
+  /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/whatIf:
+    post:
+      operationId: Deployments_WhatIf
+      summary: Run what-if analysis
+      description: >-
+        Returns changes that will be made by the deployment if executed at the
+        scope of the resource group. Used by Bicep CLI what-if command.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/resourceGroupName'
+        - $ref: '#/components/parameters/deploymentName'
+        - $ref: '#/components/parameters/apiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeploymentWhatIf'
+      responses:
+        '200':
+          description: What-if analysis completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhatIfOperationResult'
+        '202':
+          description: Accepted - what-if analysis in progress
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudError'
+  /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments:
+    get:
+      operationId: Deployments_ListByResourceGroup
+      summary: List deployments by resource group
+      description: Get all the deployments for a resource group.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/resourceGroupName'
+        - $ref: '#/components/parameters/apiVersion'
+        - name: $filter
+          in: query
+          description: OData filter expression to apply
+          schema:
+            type: string
+        - name: $top
+          in: query
+          description: Maximum number of results to return
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of deployments returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentListResult'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudError'
+  /subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}:
+    put:
+      operationId: Deployments_CreateOrUpdateAtSubscriptionScope
+      summary: Create or update a deployment at subscription scope
+      description: Deploys resources at subscription scope using an ARM/Bicep template.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/deploymentName'
+        - $ref: '#/components/parameters/apiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScopedDeployment'
+      responses:
+        '200':
+          description: Deployment updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentExtended'
+        '201':
+          description: Deployment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentExtended'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudError'
+    get:
+      operationId: Deployments_GetAtSubscriptionScope
+      summary: Get a deployment at subscription scope
+      description: Gets a deployment at subscription scope.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/deploymentName'
+        - $ref: '#/components/parameters/apiVersion'
+      responses:
+        '200':
+          description: Deployment details returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentExtended'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudError'
+  /subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/validate:
+    post:
+      operationId: Deployments_ValidateAtSubscriptionScope
+      summary: Validate a deployment at subscription scope
+      description: Validates a template deployment at subscription scope.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/deploymentName'
+        - $ref: '#/components/parameters/apiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScopedDeployment'
+      responses:
+        '200':
+          description: Validation succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentValidateResult'
+        '202':
+          description: Accepted - validation in progress
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentValidateResult'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudError'
+  /providers/Microsoft.Resources/calculateTemplateHash:
+    post:
+      operationId: Deployments_CalculateTemplateHash
+      summary: Calculate template hash
+      description: Calculate the hash of the given ARM/Bicep compiled template.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/apiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: The template content to hash
+      responses:
+        '200':
+          description: Template hash calculated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  minifiedTemplate:
+                    type: string
+                    description: The minified template string
+                  templateHash:
+                    type: string
+                    description: The hash of the template
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudError'
+      security: []
+components:
+  securitySchemes:
+    azure_auth:
+      type: oauth2
+      description: Azure Active Directory OAuth2 Flow
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: Impersonate your user account
+  parameters:
+    subscriptionId:
+      name: subscriptionId
+      in: path
+      required: true
+      description: The Microsoft Azure subscription ID
+      schema:
+        type: string
+    resourceGroupName:
+      name: resourceGroupName
+      in: path
+      required: true
+      description: >-
+        The name of the resource group. The name is case insensitive.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90
+        pattern: ^[-\w\.\_\(\)]+$
+    deploymentName:
+      name: deploymentName
+      in: path
+      required: true
+      description: The name of the deployment
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: ^[-\w\.\_\(\)]+$
+    apiVersion:
+      name: api-version
+      in: query
+      required: true
+      description: The API version to use for this operation
+      schema:
+        type: string
+        default: '2025-04-01'
+  schemas:
+    Deployment:
+      type: object
+      required:
+        - properties
+      properties:
+        properties:
+          $ref: '#/components/schemas/DeploymentProperties'
+        location:
+          type: string
+          description: The location to store the deployment data
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+          description: Deployment tags
+        identity:
+          $ref: '#/components/schemas/DeploymentIdentity'
+    ScopedDeployment:
+      type: object
+      required:
+        - properties
+        - location
+      properties:
+        properties:
+          $ref: '#/components/schemas/DeploymentProperties'
+        location:
+          type: string
+          description: The location to store the deployment data
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+          description: Deployment tags
+        identity:
+          $ref: '#/components/schemas/DeploymentIdentity'
+    DeploymentProperties:
+      type: object
+      required:
+        - mode
+      properties:
+        template:
+          type: object
+          description: >-
+            The template content. Use this when passing the compiled Bicep
+            template directly in the request.
+        templateLink:
+          $ref: '#/components/schemas/TemplateLink'
+        parameters:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/DeploymentParameter'
+          description: >-
+            Name and value pairs that define the deployment parameters for
+            the template.
+        parametersLink:
+          $ref: '#/components/schemas/ParametersLink'
+        mode:
+          type: string
+          enum:
+            - Incremental
+            - Complete
+          description: >-
+            The deployment mode. Incremental adds resources without deleting
+            existing ones. Complete deletes resources not in the template.
+        debugSetting:
+          type: object
+          properties:
+            detailLevel:
+              type: string
+              description: >-
+                Specifies the type of information to log for debugging.
+                Permitted values are none, requestContent, responseContent,
+                or both separated by a comma.
+        onErrorDeployment:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - LastSuccessful
+                - SpecificDeployment
+              description: The deployment on error behavior type
+            deploymentName:
+              type: string
+              description: The deployment name to use on error
+        expressionEvaluationOptions:
+          type: object
+          properties:
+            scope:
+              type: string
+              enum:
+                - Outer
+                - Inner
+                - NotSpecified
+              description: >-
+                Specifies whether template expressions are evaluated within
+                the scope of the parent template or nested template.
+        validationLevel:
+          type: string
+          enum:
+            - Template
+            - Provider
+            - ProviderNoRbac
+          description: The level of validation performed on the deployment
+    DeploymentParameter:
+      type: object
+      properties:
+        value:
+          description: Input value to the parameter
+        reference:
+          type: object
+          properties:
+            keyVault:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Azure Key Vault resource ID
+            secretName:
+              type: string
+              description: Azure Key Vault secret name
+            secretVersion:
+              type: string
+              description: Azure Key Vault secret version
+          description: Azure Key Vault parameter reference
+        expression:
+          type: string
+          description: Input expression to the parameter
+    TemplateLink:
+      type: object
+      properties:
+        uri:
+          type: string
+          format: uri
+          description: The URI of the template to deploy
+        id:
+          type: string
+          description: >-
+            The resource ID of a Template Spec. Use either the id or uri
+            property, but not both.
+        contentVersion:
+          type: string
+          description: >-
+            If included, must match the ContentVersion in the template.
+        queryString:
+          type: string
+          description: >-
+            The query string (for example, a SAS token) to be used with the
+            templateLink URI.
+        relativePath:
+          type: string
+          description: >-
+            The relativePath property can be used to deploy a linked template
+            at a location relative to the parent.
+    ParametersLink:
+      type: object
+      required:
+        - uri
+      properties:
+        uri:
+          type: string
+          format: uri
+          description: The URI of the parameters file
+        contentVersion:
+          type: string
+          description: >-
+            If included, must match the ContentVersion in the template.
+    DeploymentIdentity:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - None
+            - UserAssigned
+          description: The identity type
+        userAssignedIdentities:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              clientId:
+                type: string
+                format: uuid
+                description: The client ID of the assigned identity
+              principalId:
+                type: string
+                format: uuid
+                description: The principal ID of the assigned identity
+          description: The set of user assigned identities
+    DeploymentExtended:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the deployment
+        name:
+          type: string
+          description: The name of the deployment
+        type:
+          type: string
+          description: The type of the deployment
+        location:
+          type: string
+          description: The location of the deployment
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+          description: Deployment tags
+        properties:
+          $ref: '#/components/schemas/DeploymentPropertiesExtended'
+    DeploymentPropertiesExtended:
+      type: object
+      properties:
+        provisioningState:
+          type: string
+          enum:
+            - NotSpecified
+            - Accepted
+            - Running
+            - Ready
+            - Creating
+            - Created
+            - Deleting
+            - Deleted
+            - Canceled
+            - Failed
+            - Succeeded
+            - Updating
+          description: The state of provisioning
+        correlationId:
+          type: string
+          description: The correlation ID of the deployment
+        timestamp:
+          type: string
+          format: date-time
+          description: The timestamp of the template deployment
+        duration:
+          type: string
+          description: The duration of the template deployment (ISO 8601)
+        outputs:
+          type: object
+          description: Key/value pairs that represent deployment output
+        providers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Provider'
+          description: The list of resource providers needed for the deployment
+        dependencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dependency'
+          description: The list of deployment dependencies
+        templateLink:
+          $ref: '#/components/schemas/TemplateLink'
+        parameters:
+          type: object
+          description: Deployment parameters
+        parametersLink:
+          $ref: '#/components/schemas/ParametersLink'
+        mode:
+          type: string
+          enum:
+            - Incremental
+            - Complete
+          description: The deployment mode
+        templateHash:
+          type: string
+          description: The hash produced for the template
+        outputResources:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceReference'
+          description: Array of provisioned resources
+        validatedResources:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceReference'
+          description: Array of validated resources
+        diagnostics:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeploymentDiagnostic'
+          description: Diagnostic information collected during validation
+        onErrorDeployment:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - LastSuccessful
+                - SpecificDeployment
+            deploymentName:
+              type: string
+            provisioningState:
+              type: string
+    DeploymentValidateResult:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the deployment
+        name:
+          type: string
+          description: The name of the deployment
+        type:
+          type: string
+          description: The type of the deployment
+        properties:
+          $ref: '#/components/schemas/DeploymentPropertiesExtended'
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
+    DeploymentExportResult:
+      type: object
+      properties:
+        template:
+          type: object
+          description: The exported template content
+    DeploymentWhatIf:
+      type: object
+      required:
+        - properties
+      properties:
+        properties:
+          allOf:
+            - $ref: '#/components/schemas/DeploymentProperties'
+            - type: object
+              properties:
+                whatIfSettings:
+                  type: object
+                  properties:
+                    resultFormat:
+                      type: string
+                      enum:
+                        - ResourceIdOnly
+                        - FullResourcePayloads
+                      description: The format of the what-if results
+        location:
+          type: string
+          description: The location to store the deployment data
+    WhatIfOperationResult:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Status of the what-if operation
+        properties:
+          type: object
+          properties:
+            changes:
+              type: array
+              items:
+                $ref: '#/components/schemas/WhatIfChange'
+              description: List of resource changes predicted by the what-if operation
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
+    WhatIfChange:
+      type: object
+      properties:
+        resourceId:
+          type: string
+          description: Resource ID
+        changeType:
+          type: string
+          enum:
+            - Create
+            - Delete
+            - Ignore
+            - Deploy
+            - NoChange
+            - Modify
+            - Unsupported
+          description: Type of change to the resource
+        before:
+          type: object
+          description: Resource snapshot before the deployment
+        after:
+          type: object
+          description: Resource snapshot after the deployment
+        delta:
+          type: array
+          items:
+            type: object
+            properties:
+              path:
+                type: string
+                description: The path of the property change
+              propertyChangeType:
+                type: string
+                enum:
+                  - Create
+                  - Delete
+                  - Modify
+                  - Array
+                  - NoEffect
+                description: The type of property change
+              before:
+                description: The value of the property before the deployment
+              after:
+                description: The value of the property after the deployment
+          description: The predicted changes to resource properties
+    DeploymentDiagnostic:
+      type: object
+      properties:
+        level:
+          type: string
+          enum:
+            - Warning
+            - Info
+            - Error
+          description: The diagnostic level
+        code:
+          type: string
+          description: The diagnostic code
+        message:
+          type: string
+          description: The diagnostic message
+        target:
+          type: string
+          description: The diagnostic target
+    DeploymentListResult:
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeploymentExtended'
+          description: Array of deployments
+        nextLink:
+          type: string
+          format: uri
+          description: URL to get the next set of results
+    Provider:
+      type: object
+      properties:
+        namespace:
+          type: string
+          description: The namespace of the resource provider
+        resourceTypes:
+          type: array
+          items:
+            type: object
+            properties:
+              resourceType:
+                type: string
+                description: The resource type
+              locations:
+                type: array
+                items:
+                  type: string
+                description: The locations where this resource type can be created
+    Dependency:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the dependency
+        resourceType:
+          type: string
+          description: The dependency resource type
+        resourceName:
+          type: string
+          description: The dependency resource name
+        dependsOn:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              resourceType:
+                type: string
+              resourceName:
+                type: string
+          description: The list of sub-dependencies
+    ResourceReference:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The fully qualified Azure resource ID
+        resourceType:
+          type: string
+          description: The resource type
+        apiVersion:
+          type: string
+          description: The API version the resource was deployed with
+    CloudError:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The error code
+        message:
+          type: string
+          description: The error message
+        target:
+          type: string
+          description: The error target
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponse'
+          description: The error details
+        additionalInfo:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: The additional info type
+              info:
+                type: object
+                description: The additional info
+          description: The error additional info

@@ -1,0 +1,124 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "bicep": "https://management.azure.com/schemas/microsoft-bicep/",
+    "azure": "https://management.azure.com/schemas/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+
+    "Deployment": {
+      "@id": "bicep:Deployment",
+      "@context": {
+        "name": "schema:name",
+        "location": "schema:location",
+        "mode": "bicep:deploymentMode",
+        "provisioningState": "bicep:provisioningState",
+        "templateHash": "bicep:templateHash",
+        "correlationId": "bicep:correlationId",
+        "timestamp": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "duration": "bicep:duration",
+        "outputs": "bicep:outputs",
+        "outputResources": "bicep:outputResources"
+      }
+    },
+
+    "TemplateSpec": {
+      "@id": "bicep:TemplateSpec",
+      "@context": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "displayName": "bicep:displayName",
+        "location": "schema:location",
+        "metadata": "bicep:metadata",
+        "createdAt": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "lastModifiedAt": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "TemplateSpecVersion": {
+      "@id": "bicep:TemplateSpecVersion",
+      "@context": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "mainTemplate": "bicep:mainTemplate",
+        "linkedTemplates": "bicep:linkedTemplates",
+        "timeCreated": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "timeModified": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "TemplateLink": {
+      "@id": "bicep:TemplateLink",
+      "@context": {
+        "uri": {
+          "@id": "schema:url",
+          "@type": "@id"
+        },
+        "id": "bicep:templateSpecId",
+        "contentVersion": "schema:version",
+        "relativePath": "bicep:relativePath"
+      }
+    },
+
+    "DeploymentParameter": {
+      "@id": "bicep:DeploymentParameter",
+      "@context": {
+        "value": "bicep:parameterValue",
+        "expression": "bicep:parameterExpression",
+        "reference": "bicep:keyVaultReference"
+      }
+    },
+
+    "ResourceReference": {
+      "@id": "bicep:ResourceReference",
+      "@context": {
+        "id": "bicep:resourceId",
+        "resourceType": "bicep:resourceType",
+        "apiVersion": "bicep:apiVersion"
+      }
+    },
+
+    "Provider": {
+      "@id": "bicep:Provider",
+      "@context": {
+        "namespace": "bicep:providerNamespace",
+        "resourceTypes": "bicep:providerResourceTypes"
+      }
+    },
+
+    "WhatIfChange": {
+      "@id": "bicep:WhatIfChange",
+      "@context": {
+        "resourceId": "bicep:resourceId",
+        "changeType": "bicep:changeType",
+        "before": "bicep:beforeState",
+        "after": "bicep:afterState",
+        "delta": "bicep:propertyChanges"
+      }
+    },
+
+    "DeploymentIdentity": {
+      "@id": "bicep:DeploymentIdentity",
+      "@context": {
+        "type": "bicep:identityType",
+        "userAssignedIdentities": "bicep:userAssignedIdentities"
+      }
+    }
+  }
+}

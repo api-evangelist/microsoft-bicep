@@ -1,0 +1,632 @@
+openapi: 3.1.0
+info:
+  title: Microsoft Bicep Template Specs API
+  description: >-
+    Azure Resource Manager Template Specs REST API used by Microsoft Bicep
+    for publishing and managing reusable infrastructure templates. Template Specs
+    allow you to store ARM/Bicep templates as Azure resources for versioning,
+    sharing, and access control across your organization.
+  version: '2021-05-01'
+  contact:
+    name: Microsoft Azure Support
+    url: https://azure.microsoft.com/en-us/support/
+  license:
+    name: MIT
+    url: https://github.com/Azure/bicep/blob/main/LICENSE
+  termsOfService: https://azure.microsoft.com/en-us/support/legal/
+externalDocs:
+  description: Azure Template Specs API Documentation
+  url: https://learn.microsoft.com/en-us/rest/api/resources/template-specs
+servers:
+  - url: https://management.azure.com
+    description: Azure Resource Manager Global Endpoint
+tags:
+  - name: Template Specs
+    description: Manage Template Spec resources for reusable Bicep templates
+  - name: Template Spec Versions
+    description: Manage versions of Template Spec resources
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/templateSpecs/{templateSpecName}:
+    put:
+      operationId: TemplateSpecs_CreateOrUpdate
+      summary: Create or update a Template Spec
+      description: >-
+        Creates or updates a Template Spec. Template Specs enable you to
+        store compiled Bicep templates as Azure resources for reuse and sharing.
+      tags:
+        - Template Specs
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/resourceGroupName'
+        - $ref: '#/components/parameters/templateSpecName'
+        - $ref: '#/components/parameters/apiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateSpec'
+      responses:
+        '200':
+          description: Template Spec updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpec'
+        '201':
+          description: Template Spec created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpec'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpecsError'
+    get:
+      operationId: TemplateSpecs_Get
+      summary: Get a Template Spec
+      description: Gets a Template Spec with a given name.
+      tags:
+        - Template Specs
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/resourceGroupName'
+        - $ref: '#/components/parameters/templateSpecName'
+        - $ref: '#/components/parameters/apiVersion'
+        - name: $expand
+          in: query
+          description: >-
+            Allows for expansion of additional Template Spec details.
+            Set to 'versions' to include version information.
+          schema:
+            type: string
+            enum:
+              - versions
+      responses:
+        '200':
+          description: Template Spec details returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpec'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpecsError'
+    patch:
+      operationId: TemplateSpecs_Update
+      summary: Update Template Spec tags
+      description: Updates Template Spec tags with specified values.
+      tags:
+        - Template Specs
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/resourceGroupName'
+        - $ref: '#/components/parameters/templateSpecName'
+        - $ref: '#/components/parameters/apiVersion'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateSpecUpdateModel'
+      responses:
+        '200':
+          description: Template Spec updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpec'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpecsError'
+    delete:
+      operationId: TemplateSpecs_Delete
+      summary: Delete a Template Spec
+      description: >-
+        Deletes a Template Spec by name. When the operation completes,
+        status code 200 is returned without content.
+      tags:
+        - Template Specs
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/resourceGroupName'
+        - $ref: '#/components/parameters/templateSpecName'
+        - $ref: '#/components/parameters/apiVersion'
+      responses:
+        '200':
+          description: Template Spec deleted successfully
+        '204':
+          description: Template Spec not found (already deleted)
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpecsError'
+  /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/templateSpecs:
+    get:
+      operationId: TemplateSpecs_ListByResourceGroup
+      summary: List Template Specs by resource group
+      description: Lists all the Template Specs within the specified resource group.
+      tags:
+        - Template Specs
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/resourceGroupName'
+        - $ref: '#/components/parameters/apiVersion'
+        - name: $expand
+          in: query
+          description: >-
+            Allows for expansion of additional Template Spec details.
+            Set to 'versions' to include version information.
+          schema:
+            type: string
+            enum:
+              - versions
+      responses:
+        '200':
+          description: List of Template Specs returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpecListResult'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpecsError'
+  /subscriptions/{subscriptionId}/providers/Microsoft.Resources/templateSpecs:
+    get:
+      operationId: TemplateSpecs_ListBySubscription
+      summary: List Template Specs by subscription
+      description: Lists all the Template Specs within the specified subscription.
+      tags:
+        - Template Specs
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/apiVersion'
+        - name: $expand
+          in: query
+          description: >-
+            Allows for expansion of additional Template Spec details.
+            Set to 'versions' to include version information.
+          schema:
+            type: string
+            enum:
+              - versions
+      responses:
+        '200':
+          description: List of Template Specs returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpecListResult'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpecsError'
+  /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/templateSpecs/{templateSpecName}/versions/{templateSpecVersion}:
+    put:
+      operationId: TemplateSpecVersions_CreateOrUpdate
+      summary: Create or update a Template Spec version
+      description: >-
+        Creates or updates a version of a Template Spec. Each version
+        contains the actual compiled Bicep/ARM template content.
+      tags:
+        - Template Spec Versions
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/resourceGroupName'
+        - $ref: '#/components/parameters/templateSpecName'
+        - $ref: '#/components/parameters/templateSpecVersion'
+        - $ref: '#/components/parameters/apiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateSpecVersionModel'
+      responses:
+        '200':
+          description: Template Spec version updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpecVersionModel'
+        '201':
+          description: Template Spec version created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpecVersionModel'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpecsError'
+    get:
+      operationId: TemplateSpecVersions_Get
+      summary: Get a Template Spec version
+      description: Gets a Template Spec version by name.
+      tags:
+        - Template Spec Versions
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/resourceGroupName'
+        - $ref: '#/components/parameters/templateSpecName'
+        - $ref: '#/components/parameters/templateSpecVersion'
+        - $ref: '#/components/parameters/apiVersion'
+      responses:
+        '200':
+          description: Template Spec version details returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpecVersionModel'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpecsError'
+    delete:
+      operationId: TemplateSpecVersions_Delete
+      summary: Delete a Template Spec version
+      description: Deletes a specific version from a Template Spec.
+      tags:
+        - Template Spec Versions
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/resourceGroupName'
+        - $ref: '#/components/parameters/templateSpecName'
+        - $ref: '#/components/parameters/templateSpecVersion'
+        - $ref: '#/components/parameters/apiVersion'
+      responses:
+        '200':
+          description: Template Spec version deleted successfully
+        '204':
+          description: Template Spec version not found (already deleted)
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpecsError'
+  /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/templateSpecs/{templateSpecName}/versions:
+    get:
+      operationId: TemplateSpecVersions_List
+      summary: List Template Spec versions
+      description: Lists all the versions of a Template Spec.
+      tags:
+        - Template Spec Versions
+      parameters:
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/resourceGroupName'
+        - $ref: '#/components/parameters/templateSpecName'
+        - $ref: '#/components/parameters/apiVersion'
+      responses:
+        '200':
+          description: List of versions returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpecVersionListResult'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSpecsError'
+components:
+  securitySchemes:
+    azure_auth:
+      type: oauth2
+      description: Azure Active Directory OAuth2 Flow
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: Impersonate your user account
+  parameters:
+    subscriptionId:
+      name: subscriptionId
+      in: path
+      required: true
+      description: Subscription ID which forms part of the URI for every service call
+      schema:
+        type: string
+    resourceGroupName:
+      name: resourceGroupName
+      in: path
+      required: true
+      description: >-
+        The name of the resource group. The name is case insensitive.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90
+        pattern: ^[-\w\.\_\(\)]+$
+    templateSpecName:
+      name: templateSpecName
+      in: path
+      required: true
+      description: Name of the Template Spec
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90
+        pattern: ^[-\w\.\_\(\)]+$
+    templateSpecVersion:
+      name: templateSpecVersion
+      in: path
+      required: true
+      description: The version of the Template Spec
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90
+        pattern: ^[-\w\.\_\(\)]+$
+    apiVersion:
+      name: api-version
+      in: query
+      required: true
+      description: Client API version
+      schema:
+        type: string
+        default: '2021-05-01'
+  schemas:
+    TemplateSpec:
+      type: object
+      required:
+        - location
+      properties:
+        id:
+          type: string
+          readOnly: true
+          description: String ID used to locate any resource on Azure
+        name:
+          type: string
+          readOnly: true
+          description: Name of this resource
+        type:
+          type: string
+          readOnly: true
+          description: Type of this resource
+        location:
+          type: string
+          description: >-
+            The location of the Template Spec. It cannot be changed after
+            Template Spec creation.
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+          description: Resource tags
+        systemData:
+          $ref: '#/components/schemas/SystemData'
+        properties:
+          type: object
+          properties:
+            description:
+              type: string
+              maxLength: 4096
+              description: Template Spec description
+            displayName:
+              type: string
+              maxLength: 64
+              description: Template Spec display name
+            metadata:
+              type: object
+              description: >-
+                The Template Spec metadata. Metadata is an open-ended object
+                and is typically a collection of key-value pairs.
+            versions:
+              type: object
+              readOnly: true
+              additionalProperties:
+                $ref: '#/components/schemas/TemplateSpecVersionInfo'
+              description: >-
+                High-level information about the versions within this
+                Template Spec. Only populated if $expand query parameter
+                is set to 'versions'.
+    TemplateSpecUpdateModel:
+      type: object
+      properties:
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+          description: Resource tags
+    TemplateSpecVersionModel:
+      type: object
+      required:
+        - location
+        - properties
+      properties:
+        id:
+          type: string
+          readOnly: true
+          description: String ID used to locate any resource on Azure
+        name:
+          type: string
+          readOnly: true
+          description: Name of this resource
+        type:
+          type: string
+          readOnly: true
+          description: Type of this resource
+        location:
+          type: string
+          description: The location of the Template Spec version
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+          description: Resource tags
+        systemData:
+          $ref: '#/components/schemas/SystemData'
+        properties:
+          type: object
+          required:
+            - mainTemplate
+          properties:
+            description:
+              type: string
+              maxLength: 4096
+              description: Template Spec version description
+            linkedTemplates:
+              type: array
+              items:
+                $ref: '#/components/schemas/LinkedTemplateArtifact'
+              description: An array of linked template artifacts
+            mainTemplate:
+              type: object
+              description: >-
+                The main ARM/Bicep compiled template content for this version
+            metadata:
+              type: object
+              description: >-
+                The version metadata. Metadata is an open-ended object
+                and is typically a collection of key-value pairs.
+            uiFormDefinition:
+              type: object
+              description: >-
+                The Azure Resource Manager template UI definition content.
+                This can be used to customize the portal deployment experience.
+    TemplateSpecVersionInfo:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Template Spec version description
+        timeCreated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The timestamp of when the version was created
+        timeModified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The timestamp of when the version was last modified
+    LinkedTemplateArtifact:
+      type: object
+      required:
+        - path
+        - template
+      properties:
+        path:
+          type: string
+          description: >-
+            A filesystem safe relative path of the artifact
+        template:
+          type: object
+          description: The ARM/Bicep compiled template content
+    TemplateSpecListResult:
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateSpec'
+          description: Array of Template Specs
+        nextLink:
+          type: string
+          format: uri
+          readOnly: true
+          description: URL to get the next set of results
+    TemplateSpecVersionListResult:
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateSpecVersionModel'
+          description: Array of Template Spec versions
+        nextLink:
+          type: string
+          format: uri
+          readOnly: true
+          description: URL to get the next set of results
+    SystemData:
+      type: object
+      properties:
+        createdBy:
+          type: string
+          description: The identity that created the resource
+        createdByType:
+          type: string
+          enum:
+            - User
+            - Application
+            - ManagedIdentity
+            - Key
+          description: The type of identity that created the resource
+        createdAt:
+          type: string
+          format: date-time
+          description: The timestamp of resource creation (UTC)
+        lastModifiedBy:
+          type: string
+          description: The identity that last modified the resource
+        lastModifiedByType:
+          type: string
+          enum:
+            - User
+            - Application
+            - ManagedIdentity
+            - Key
+          description: The type of identity that last modified the resource
+        lastModifiedAt:
+          type: string
+          format: date-time
+          description: The timestamp of resource last modification (UTC)
+    TemplateSpecsError:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The error code
+        message:
+          type: string
+          description: The error message
+        target:
+          type: string
+          description: The error target
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponse'
+          description: The error details
+        additionalInfo:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: The additional info type
+              info:
+                type: object
+                description: The additional info
+          description: The error additional info
