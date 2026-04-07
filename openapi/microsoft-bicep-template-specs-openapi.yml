@@ -29,10 +29,10 @@ security:
   - azure_auth:
       - user_impersonation
 paths:
-  /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/templateSpecs/{templateSpecName}:
-    put:
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/templateSpecs/{templateSpecName}
+  : put:
       operationId: TemplateSpecs_CreateOrUpdate
-      summary: Create or update a Template Spec
+      summary: Microsoft Bicep Create or update a Template Spec
       description: >-
         Creates or updates a Template Spec. Template Specs enable you to
         store compiled Bicep templates as Azure resources for reuse and sharing.
@@ -70,7 +70,7 @@ paths:
                 $ref: '#/components/schemas/TemplateSpecsError'
     get:
       operationId: TemplateSpecs_Get
-      summary: Get a Template Spec
+      summary: Microsoft Bicep Get a Template Spec
       description: Gets a Template Spec with a given name.
       tags:
         - Template Specs
@@ -103,7 +103,7 @@ paths:
                 $ref: '#/components/schemas/TemplateSpecsError'
     patch:
       operationId: TemplateSpecs_Update
-      summary: Update Template Spec tags
+      summary: Microsoft Bicep Update Template Spec tags
       description: Updates Template Spec tags with specified values.
       tags:
         - Template Specs
@@ -132,7 +132,7 @@ paths:
                 $ref: '#/components/schemas/TemplateSpecsError'
     delete:
       operationId: TemplateSpecs_Delete
-      summary: Delete a Template Spec
+      summary: Microsoft Bicep Delete a Template Spec
       description: >-
         Deletes a Template Spec by name. When the operation completes,
         status code 200 is returned without content.
@@ -157,7 +157,7 @@ paths:
   /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/templateSpecs:
     get:
       operationId: TemplateSpecs_ListByResourceGroup
-      summary: List Template Specs by resource group
+      summary: Microsoft Bicep List Template Specs by resource group
       description: Lists all the Template Specs within the specified resource group.
       tags:
         - Template Specs
@@ -190,7 +190,7 @@ paths:
   /subscriptions/{subscriptionId}/providers/Microsoft.Resources/templateSpecs:
     get:
       operationId: TemplateSpecs_ListBySubscription
-      summary: List Template Specs by subscription
+      summary: Microsoft Bicep List Template Specs by subscription
       description: Lists all the Template Specs within the specified subscription.
       tags:
         - Template Specs
@@ -219,10 +219,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TemplateSpecsError'
-  /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/templateSpecs/{templateSpecName}/versions/{templateSpecVersion}:
-    put:
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/templateSpecs/{templateSpecName}/versions/{templateSpecVersion}
+  : put:
       operationId: TemplateSpecVersions_CreateOrUpdate
-      summary: Create or update a Template Spec version
+      summary: Microsoft Bicep Create or update a Template Spec version
       description: >-
         Creates or updates a version of a Template Spec. Each version
         contains the actual compiled Bicep/ARM template content.
@@ -261,7 +261,7 @@ paths:
                 $ref: '#/components/schemas/TemplateSpecsError'
     get:
       operationId: TemplateSpecVersions_Get
-      summary: Get a Template Spec version
+      summary: Microsoft Bicep Get a Template Spec version
       description: Gets a Template Spec version by name.
       tags:
         - Template Spec Versions
@@ -286,7 +286,7 @@ paths:
                 $ref: '#/components/schemas/TemplateSpecsError'
     delete:
       operationId: TemplateSpecVersions_Delete
-      summary: Delete a Template Spec version
+      summary: Microsoft Bicep Delete a Template Spec version
       description: Deletes a specific version from a Template Spec.
       tags:
         - Template Spec Versions
@@ -307,10 +307,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TemplateSpecsError'
-  /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/templateSpecs/{templateSpecName}/versions:
-    get:
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/templateSpecs/{templateSpecName}/versions
+  : get:
       operationId: TemplateSpecVersions_List
-      summary: List Template Spec versions
+      summary: Microsoft Bicep List Template Spec versions
       description: Lists all the versions of a Template Spec.
       tags:
         - Template Spec Versions
