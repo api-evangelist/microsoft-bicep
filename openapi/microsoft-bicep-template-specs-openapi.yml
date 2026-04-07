@@ -21,10 +21,10 @@ servers:
   - url: https://management.azure.com
     description: Azure Resource Manager Global Endpoint
 tags:
-  - name: Template Specs
-    description: Manage Template Spec resources for reusable Bicep templates
   - name: Template Spec Versions
     description: Manage versions of Template Spec resources
+  - name: Template Specs
+    description: Manage Template Spec resources for reusable Bicep templates
 security:
   - azure_auth:
       - user_impersonation

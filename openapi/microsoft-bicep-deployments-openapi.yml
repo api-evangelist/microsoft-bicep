@@ -23,8 +23,6 @@ servers:
 tags:
   - name: Deployments
     description: Create, validate, and manage ARM/Bicep template deployments
-  - name: Deployment Operations
-    description: Query deployment operation status and details
 security:
   - azure_auth:
       - user_impersonation
