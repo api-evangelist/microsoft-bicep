@@ -4,7 +4,8 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Microsoft Bicep
 providerId: microsoft-bicep
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: true
 tags:
   - ARM Templates
   - Azure
@@ -13,93 +14,73 @@ tags:
   - DevOps
   - Infrastructure as Code
   - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Microsoft Bicep API surface. Captures per-tier
-  quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to
-  be replaced with published provider limits.
+description: Bicep is a client-side compiler / language; it has no SaaS API surface of its
+  own. Local CLI operations (bicep build, bicep decompile, bicep publish) have no rate limits
+  beyond local-machine resources. When Bicep deployments execute against Azure, all rate
+  limiting comes from Azure Resource Manager (ARM) and the target resource providers.
+  Throttling responses, headers, and policies match the upstream ARM behavior.
+sources:
+  - https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview
+  - https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
   retryAfter: Retry-After
-  policy: RateLimit-Policy
+  remainingSubscriptionReads: x-ms-ratelimit-remaining-subscription-reads
+  remainingSubscriptionWrites: x-ms-ratelimit-remaining-subscription-writes
+  remainingSubscriptionDeletes: x-ms-ratelimit-remaining-subscription-deletes
+  remainingResource: x-ms-ratelimit-remaining-resource
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
   serviceUnavailable: 503
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
+  - name: Bicep CLI local operations
+    scope: local-machine
+    metric: invocations_per_second
+    limit: -1
+    notes: No rate limit; bound only by local CPU and memory.
+  - name: ARM subscription writes (deployment plane)
+    scope: subscription/region/serviceprincipal
+    metric: requests_per_second
     limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Bicep CLI
-      - Bicep Language Server
-      - Bicep Deployments REST API
-      - Bicep Template Specs REST API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Bicep CLI
-      - Bicep Language Server
-      - Bicep Deployments REST API
-      - Bicep Template Specs REST API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Bicep CLI
-      - Bicep Language Server
-      - Bicep Deployments REST API
-      - Bicep Template Specs REST API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Bicep CLI
-      - Bicep Language Server
-      - Bicep Deployments REST API
-      - Bicep Template Specs REST API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Bicep CLI
-      - Bicep Language Server
-      - Bicep Deployments REST API
-      - Bicep Template Specs REST API
+    timeFrame: second
+    notes: Deployments are write operations against ARM. Bucket size 200 tokens, refill 10/sec.
+  - name: ARM subscription reads (validation / what-if)
+    scope: subscription/region/serviceprincipal
+    metric: requests_per_second
+    limit: 25
+    timeFrame: second
+    notes: Bucket size 250, refill 25/sec.
+  - name: ARM template deployment depth
+    scope: subscription
+    metric: nested_deployments
+    limit: 800
+    notes: Maximum 800 nested deployments per top-level deployment; 5-level nesting limit.
+  - name: ARM template size
+    scope: deployment
+    metric: bytes_compiled
+    limit: 4194304
+    notes: Compiled JSON template ≤ 4 MB; max 256 parameters / 256 variables / 800 resources
+      per template.
+  - name: Resource-provider-specific limits
+    scope: varies
+    metric: varies
+    limit: see vendor docs per provider (Microsoft.Compute, Microsoft.Network, Microsoft.Storage,
+      etc.)
+    notes: Each downstream resource provider applies its own throttling token buckets.
 policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+  - name: ARM token-bucket retry
+    description: Honor Retry-After on 429 responses. Azure SDKs implement exponential backoff
+      automatically; Bicep CLI uses the SDK underneath.
+  - name: Idempotent deployments
+    description: Bicep deployments are idempotent — re-running with the same parameters yields
+      the same state. Combine with what-if to preview changes without mutating state.
+  - name: Modules to reduce single-deployment fan-out
+    description: Break large templates into modules with serial / parallel scope to avoid
+      hitting the per-deployment 800-resource cap.
+  - name: Deployment scopes
+    description: Bicep supports tenant, management group, subscription, and resource group
+      deployment scopes. Subscription-scope deployments share the subscription-level token
+      buckets.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+    url: https://github.com/Azure/bicep
