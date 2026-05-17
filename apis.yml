@@ -26,7 +26,7 @@ apis:
     properties:
       - type: Documentation
         url: https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/
-      - type: GitHub Repository
+      - type: GitHubRepository
         url: https://github.com/Azure/bicep
       - type: Installation Guide
         url: https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/install
@@ -45,7 +45,7 @@ apis:
     properties:
       - type: Documentation
         url: https://github.com/Azure/bicep/blob/main/docs/contributing/language-server.md
-      - type: GitHub Repository
+      - type: GitHubRepository
         url: https://github.com/Azure/bicep/tree/main/src/Bicep.LangServer
       - type: VS Code Extension
         url: https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep
@@ -83,7 +83,7 @@ maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
 common:
-  - type: GitHub Organization
+  - type: GitHubOrganization
     url: https://github.com/Azure
   - type: Blog
     url: https://devblogs.microsoft.com/azure-sdk/
@@ -93,13 +93,13 @@ common:
     url: https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/learn-bicep
   - type: Bicep Examples
     url: https://github.com/Azure/bicep/tree/main/docs/examples
-  - type: Release Notes
+  - type: ReleaseNotes
     url: https://github.com/Azure/bicep/releases
   - type: Contributing Guide
     url: https://github.com/Azure/bicep/blob/main/CONTRIBUTING.md
   - type: License
     url: https://github.com/Azure/bicep/blob/main/LICENSE
-  - type: JSON-LD
+  - type: JSONLD
     url: json-ld/microsoft-bicep-context.jsonld
   - type: JSONSchema
     url: json-schema/microsoft-bicep-deployment-schema.json
