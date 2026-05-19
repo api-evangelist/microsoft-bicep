@@ -1,0 +1,501 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Microsoft Bicep Deployments API — Deployments
+  description: 'Microsoft Bicep Deployments API — Deployments. 13 operations. Lead operation: Microsoft Bicep Calculate template
+    hash. Self-contained Naftiko capability covering one Microsoft Bicep business surface.'
+  tags:
+  - Microsoft Bicep
+  - Deployments
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MICROSOFT_BICEP_API_KEY: MICROSOFT_BICEP_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: deployments-deployments
+    baseUri: https://management.azure.com
+    description: Microsoft Bicep Deployments API — Deployments business capability. Self-contained, no shared references.
+    resources:
+    - name: providers-Microsoft.Resources-calculateTemplateHash
+      path: /providers/Microsoft.Resources/calculateTemplateHash
+      operations:
+      - name: deploymentscalculatetemplatehash
+        method: POST
+        description: Microsoft Bicep Calculate template hash
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: subscriptions-subscriptionId-providers-Microsoft.Resources-deployments-deploymen
+      path: /subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}
+      operations:
+      - name: deploymentscreateorupdateatsubscriptionscope
+        method: PUT
+        description: Microsoft Bicep Create or update a deployment at subscription scope
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deploymentsgetatsubscriptionscope
+        method: GET
+        description: Microsoft Bicep Get a deployment at subscription scope
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: subscriptions-subscriptionId-providers-Microsoft.Resources-deployments-deploymen
+      path: /subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/validate
+      operations:
+      - name: deploymentsvalidateatsubscriptionscope
+        method: POST
+        description: Microsoft Bicep Validate a deployment at subscription scope
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: subscriptions-subscriptionId-resourcegroups-resourceGroupName-providers-Microsof
+      path: /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments
+      operations:
+      - name: deploymentslistbyresourcegroup
+        method: GET
+        description: Microsoft Bicep List deployments by resource group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: $filter
+          in: query
+          type: string
+          description: OData filter expression to apply
+        - name: $top
+          in: query
+          type: integer
+          description: Maximum number of results to return
+    - name: subscriptions-subscriptionId-resourcegroups-resourceGroupName-providers-Microsof
+      path: /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}
+      operations:
+      - name: deploymentscreateorupdate
+        method: PUT
+        description: Microsoft Bicep Create or update a deployment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deploymentsget
+        method: GET
+        description: Microsoft Bicep Get a deployment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deploymentsdelete
+        method: DELETE
+        description: Microsoft Bicep Delete a deployment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deploymentscheckexistence
+        method: HEAD
+        description: Microsoft Bicep Check deployment existence
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: subscriptions-subscriptionId-resourcegroups-resourceGroupName-providers-Microsof
+      path: /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/cancel
+      operations:
+      - name: deploymentscancel
+        method: POST
+        description: Microsoft Bicep Cancel a running deployment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: subscriptions-subscriptionId-resourcegroups-resourceGroupName-providers-Microsof
+      path: /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/exportTemplate
+      operations:
+      - name: deploymentsexporttemplate
+        method: POST
+        description: Microsoft Bicep Export a deployment template
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: subscriptions-subscriptionId-resourcegroups-resourceGroupName-providers-Microsof
+      path: /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/validate
+      operations:
+      - name: deploymentsvalidate
+        method: POST
+        description: Microsoft Bicep Validate a deployment template
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: subscriptions-subscriptionId-resourcegroups-resourceGroupName-providers-Microsof
+      path: /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/whatIf
+      operations:
+      - name: deploymentswhatif
+        method: POST
+        description: Microsoft Bicep Run what-if analysis
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.MICROSOFT_BICEP_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: deployments-deployments-rest
+    port: 8080
+    description: REST adapter for Microsoft Bicep Deployments API — Deployments. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/providers/microsoft-resources/calculatetemplatehash
+      name: providers-microsoft-resources-calculatetemplatehash
+      description: REST surface for providers-Microsoft.Resources-calculateTemplateHash.
+      operations:
+      - method: POST
+        name: deploymentscalculatetemplatehash
+        description: Microsoft Bicep Calculate template hash
+        call: deployments-deployments.deploymentscalculatetemplatehash
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/subscriptions/{subscriptionid}/providers/microsoft-resources/deployments/{deploymentname}
+      name: subscriptions-subscriptionid-providers-microsoft-resources-deployments-deploymen
+      description: REST surface for subscriptions-subscriptionId-providers-Microsoft.Resources-deployments-deploymen.
+      operations:
+      - method: PUT
+        name: deploymentscreateorupdateatsubscriptionscope
+        description: Microsoft Bicep Create or update a deployment at subscription scope
+        call: deployments-deployments.deploymentscreateorupdateatsubscriptionscope
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: deploymentsgetatsubscriptionscope
+        description: Microsoft Bicep Get a deployment at subscription scope
+        call: deployments-deployments.deploymentsgetatsubscriptionscope
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/subscriptions/{subscriptionid}/providers/microsoft-resources/deployments/{deploymentname}/validate
+      name: subscriptions-subscriptionid-providers-microsoft-resources-deployments-deploymen
+      description: REST surface for subscriptions-subscriptionId-providers-Microsoft.Resources-deployments-deploymen.
+      operations:
+      - method: POST
+        name: deploymentsvalidateatsubscriptionscope
+        description: Microsoft Bicep Validate a deployment at subscription scope
+        call: deployments-deployments.deploymentsvalidateatsubscriptionscope
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/subscriptions/{subscriptionid}/resourcegroups/{resourcegroupname}/providers/microsoft-resources/deployments
+      name: subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsof
+      description: REST surface for subscriptions-subscriptionId-resourcegroups-resourceGroupName-providers-Microsof.
+      operations:
+      - method: GET
+        name: deploymentslistbyresourcegroup
+        description: Microsoft Bicep List deployments by resource group
+        call: deployments-deployments.deploymentslistbyresourcegroup
+        with:
+          $filter: rest.$filter
+          $top: rest.$top
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/subscriptions/{subscriptionid}/resourcegroups/{resourcegroupname}/providers/microsoft-resources/deployments/{deploymentname}
+      name: subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsof
+      description: REST surface for subscriptions-subscriptionId-resourcegroups-resourceGroupName-providers-Microsof.
+      operations:
+      - method: PUT
+        name: deploymentscreateorupdate
+        description: Microsoft Bicep Create or update a deployment
+        call: deployments-deployments.deploymentscreateorupdate
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: deploymentsget
+        description: Microsoft Bicep Get a deployment
+        call: deployments-deployments.deploymentsget
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deploymentsdelete
+        description: Microsoft Bicep Delete a deployment
+        call: deployments-deployments.deploymentsdelete
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: HEAD
+        name: deploymentscheckexistence
+        description: Microsoft Bicep Check deployment existence
+        call: deployments-deployments.deploymentscheckexistence
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/subscriptions/{subscriptionid}/resourcegroups/{resourcegroupname}/providers/microsoft-resources/deployments/{deploymentname}/cancel
+      name: subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsof
+      description: REST surface for subscriptions-subscriptionId-resourcegroups-resourceGroupName-providers-Microsof.
+      operations:
+      - method: POST
+        name: deploymentscancel
+        description: Microsoft Bicep Cancel a running deployment
+        call: deployments-deployments.deploymentscancel
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/subscriptions/{subscriptionid}/resourcegroups/{resourcegroupname}/providers/microsoft-resources/deployments/{deploymentname}/exporttemplate
+      name: subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsof
+      description: REST surface for subscriptions-subscriptionId-resourcegroups-resourceGroupName-providers-Microsof.
+      operations:
+      - method: POST
+        name: deploymentsexporttemplate
+        description: Microsoft Bicep Export a deployment template
+        call: deployments-deployments.deploymentsexporttemplate
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/subscriptions/{subscriptionid}/resourcegroups/{resourcegroupname}/providers/microsoft-resources/deployments/{deploymentname}/validate
+      name: subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsof
+      description: REST surface for subscriptions-subscriptionId-resourcegroups-resourceGroupName-providers-Microsof.
+      operations:
+      - method: POST
+        name: deploymentsvalidate
+        description: Microsoft Bicep Validate a deployment template
+        call: deployments-deployments.deploymentsvalidate
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/subscriptions/{subscriptionid}/resourcegroups/{resourcegroupname}/providers/microsoft-resources/deployments/{deploymentname}/whatif
+      name: subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsof
+      description: REST surface for subscriptions-subscriptionId-resourcegroups-resourceGroupName-providers-Microsof.
+      operations:
+      - method: POST
+        name: deploymentswhatif
+        description: Microsoft Bicep Run what-if analysis
+        call: deployments-deployments.deploymentswhatif
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: deployments-deployments-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Microsoft Bicep Deployments API — Deployments. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: microsoft-bicep-calculate-template-hash
+      description: Microsoft Bicep Calculate template hash
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: deployments-deployments.deploymentscalculatetemplatehash
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-bicep-create-update-deployment
+      description: Microsoft Bicep Create or update a deployment at subscription scope
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: deployments-deployments.deploymentscreateorupdateatsubscriptionscope
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-bicep-get-deployment-subscription
+      description: Microsoft Bicep Get a deployment at subscription scope
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: deployments-deployments.deploymentsgetatsubscriptionscope
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-bicep-validate-deployment-subscription
+      description: Microsoft Bicep Validate a deployment at subscription scope
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: deployments-deployments.deploymentsvalidateatsubscriptionscope
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-bicep-list-deployments-resource
+      description: Microsoft Bicep List deployments by resource group
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: deployments-deployments.deploymentslistbyresourcegroup
+      with:
+        $filter: tools.$filter
+        $top: tools.$top
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-bicep-create-update-deployment-2
+      description: Microsoft Bicep Create or update a deployment
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: deployments-deployments.deploymentscreateorupdate
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-bicep-get-deployment
+      description: Microsoft Bicep Get a deployment
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: deployments-deployments.deploymentsget
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-bicep-delete-deployment
+      description: Microsoft Bicep Delete a deployment
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: deployments-deployments.deploymentsdelete
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-bicep-check-deployment-existence
+      description: Microsoft Bicep Check deployment existence
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: deployments-deployments.deploymentscheckexistence
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-bicep-cancel-running-deployment
+      description: Microsoft Bicep Cancel a running deployment
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: deployments-deployments.deploymentscancel
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-bicep-export-deployment-template
+      description: Microsoft Bicep Export a deployment template
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: deployments-deployments.deploymentsexporttemplate
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-bicep-validate-deployment-template
+      description: Microsoft Bicep Validate a deployment template
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: deployments-deployments.deploymentsvalidate
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: microsoft-bicep-run-what-if
+      description: Microsoft Bicep Run what-if analysis
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: deployments-deployments.deploymentswhatif
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
