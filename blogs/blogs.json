@@ -2,12 +2,20 @@
   "repo": "microsoft-bicep",
   "feeds": [
     {
-      "source": "https://devblogs.microsoft.com/azure-sdk/",
+      "source": "https://devblogs.microsoft.com/azure-sdk/feed/",
       "feed_url": "https://devblogs.microsoft.com/azure-sdk/feed/",
-      "title": "Azure SDK Blog",
-      "saved": 19
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
+      "source": "https://github.com/Azure",
+      "feed_url": "https://github.com/Azure",
+      "title": "",
+      "saved": 0,
+      "method": "none"
     }
   ],
-  "post_count": 30,
-  "fetched": "2026-05-17T20:20:35Z"
+  "post_count": 31,
+  "fetched": "2026-06-01T23:35:02Z"
 }
