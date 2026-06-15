@@ -1,0 +1,503 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Microsoft Bicep Deployments API",
+    "version": "2025-04-01"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "https://login.microsoftonline.com/common/oauth2/authorize",
+      "credentials": {
+        "clientId": "{{clientId}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Deployments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Microsoft Bicep Get a deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://management.azure.com/subscriptions/:subscriptionId/resourcegroups/:resourceGroupName/providers/Microsoft.Resources/deployments/:deploymentName",
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "The Microsoft Azure subscription ID"
+              },
+              {
+                "name": "resourceGroupName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the resource group. The name is case insensitive."
+              },
+              {
+                "name": "deploymentName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployment"
+              },
+              {
+                "name": "api-version",
+                "value": "",
+                "type": "query",
+                "description": "The API version to use for this operation"
+              }
+            ]
+          },
+          "docs": "Gets a deployment by name within a resource group."
+        },
+        {
+          "info": {
+            "name": "Microsoft Bicep Create or update a deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://management.azure.com/subscriptions/:subscriptionId/resourcegroups/:resourceGroupName/providers/Microsoft.Resources/deployments/:deploymentName",
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "The Microsoft Azure subscription ID"
+              },
+              {
+                "name": "resourceGroupName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the resource group. The name is case insensitive."
+              },
+              {
+                "name": "deploymentName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployment"
+              },
+              {
+                "name": "api-version",
+                "value": "",
+                "type": "query",
+                "description": "The API version to use for this operation"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deploys resources to a resource group using an ARM/Bicep template. You can provide the template directly or link to a template URI or Template Spec."
+        },
+        {
+          "info": {
+            "name": "Microsoft Bicep Delete a deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://management.azure.com/subscriptions/:subscriptionId/resourcegroups/:resourceGroupName/providers/Microsoft.Resources/deployments/:deploymentName",
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "The Microsoft Azure subscription ID"
+              },
+              {
+                "name": "resourceGroupName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the resource group. The name is case insensitive."
+              },
+              {
+                "name": "deploymentName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployment"
+              },
+              {
+                "name": "api-version",
+                "value": "",
+                "type": "query",
+                "description": "The API version to use for this operation"
+              }
+            ]
+          },
+          "docs": "Deletes a deployment from the deployment history. Does not affect deployed resources."
+        },
+        {
+          "info": {
+            "name": "Microsoft Bicep Check deployment existence",
+            "type": "http"
+          },
+          "http": {
+            "method": "HEAD",
+            "url": "https://management.azure.com/subscriptions/:subscriptionId/resourcegroups/:resourceGroupName/providers/Microsoft.Resources/deployments/:deploymentName",
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "The Microsoft Azure subscription ID"
+              },
+              {
+                "name": "resourceGroupName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the resource group. The name is case insensitive."
+              },
+              {
+                "name": "deploymentName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployment"
+              },
+              {
+                "name": "api-version",
+                "value": "",
+                "type": "query",
+                "description": "The API version to use for this operation"
+              }
+            ]
+          },
+          "docs": "Checks whether a deployment exists in a resource group."
+        },
+        {
+          "info": {
+            "name": "Microsoft Bicep Validate a deployment template",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://management.azure.com/subscriptions/:subscriptionId/resourcegroups/:resourceGroupName/providers/Microsoft.Resources/deployments/:deploymentName/validate",
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "The Microsoft Azure subscription ID"
+              },
+              {
+                "name": "resourceGroupName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the resource group. The name is case insensitive."
+              },
+              {
+                "name": "deploymentName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployment"
+              },
+              {
+                "name": "api-version",
+                "value": "",
+                "type": "query",
+                "description": "The API version to use for this operation"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager. This is the primary validation endpoint used by the Bicep CLI."
+        },
+        {
+          "info": {
+            "name": "Microsoft Bicep Cancel a running deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://management.azure.com/subscriptions/:subscriptionId/resourcegroups/:resourceGroupName/providers/Microsoft.Resources/deployments/:deploymentName/cancel",
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "The Microsoft Azure subscription ID"
+              },
+              {
+                "name": "resourceGroupName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the resource group. The name is case insensitive."
+              },
+              {
+                "name": "deploymentName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployment"
+              },
+              {
+                "name": "api-version",
+                "value": "",
+                "type": "query",
+                "description": "The API version to use for this operation"
+              }
+            ]
+          },
+          "docs": "Cancels a currently running template deployment. Only deployments in progress can be cancelled."
+        },
+        {
+          "info": {
+            "name": "Microsoft Bicep Export a deployment template",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://management.azure.com/subscriptions/:subscriptionId/resourcegroups/:resourceGroupName/providers/Microsoft.Resources/deployments/:deploymentName/exportTemplate",
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "The Microsoft Azure subscription ID"
+              },
+              {
+                "name": "resourceGroupName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the resource group. The name is case insensitive."
+              },
+              {
+                "name": "deploymentName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployment"
+              },
+              {
+                "name": "api-version",
+                "value": "",
+                "type": "query",
+                "description": "The API version to use for this operation"
+              }
+            ]
+          },
+          "docs": "Exports the template used for the specified deployment."
+        },
+        {
+          "info": {
+            "name": "Microsoft Bicep Run what-if analysis",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://management.azure.com/subscriptions/:subscriptionId/resourcegroups/:resourceGroupName/providers/Microsoft.Resources/deployments/:deploymentName/whatIf",
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "The Microsoft Azure subscription ID"
+              },
+              {
+                "name": "resourceGroupName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the resource group. The name is case insensitive."
+              },
+              {
+                "name": "deploymentName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployment"
+              },
+              {
+                "name": "api-version",
+                "value": "",
+                "type": "query",
+                "description": "The API version to use for this operation"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns changes that will be made by the deployment if executed at the scope of the resource group. Used by Bicep CLI what-if command."
+        },
+        {
+          "info": {
+            "name": "Microsoft Bicep List deployments by resource group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://management.azure.com/subscriptions/:subscriptionId/resourcegroups/:resourceGroupName/providers/Microsoft.Resources/deployments",
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "The Microsoft Azure subscription ID"
+              },
+              {
+                "name": "resourceGroupName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the resource group. The name is case insensitive."
+              },
+              {
+                "name": "api-version",
+                "value": "",
+                "type": "query",
+                "description": "The API version to use for this operation"
+              },
+              {
+                "name": "$filter",
+                "value": "",
+                "type": "query",
+                "description": "OData filter expression to apply"
+              },
+              {
+                "name": "$top",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return"
+              }
+            ]
+          },
+          "docs": "Get all the deployments for a resource group."
+        },
+        {
+          "info": {
+            "name": "Microsoft Bicep Get a deployment at subscription scope",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://management.azure.com/subscriptions/:subscriptionId/providers/Microsoft.Resources/deployments/:deploymentName",
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "The Microsoft Azure subscription ID"
+              },
+              {
+                "name": "deploymentName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployment"
+              },
+              {
+                "name": "api-version",
+                "value": "",
+                "type": "query",
+                "description": "The API version to use for this operation"
+              }
+            ]
+          },
+          "docs": "Gets a deployment at subscription scope."
+        },
+        {
+          "info": {
+            "name": "Microsoft Bicep Create or update a deployment at subscription scope",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://management.azure.com/subscriptions/:subscriptionId/providers/Microsoft.Resources/deployments/:deploymentName",
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "The Microsoft Azure subscription ID"
+              },
+              {
+                "name": "deploymentName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployment"
+              },
+              {
+                "name": "api-version",
+                "value": "",
+                "type": "query",
+                "description": "The API version to use for this operation"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deploys resources at subscription scope using an ARM/Bicep template."
+        },
+        {
+          "info": {
+            "name": "Microsoft Bicep Validate a deployment at subscription scope",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://management.azure.com/subscriptions/:subscriptionId/providers/Microsoft.Resources/deployments/:deploymentName/validate",
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "The Microsoft Azure subscription ID"
+              },
+              {
+                "name": "deploymentName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the deployment"
+              },
+              {
+                "name": "api-version",
+                "value": "",
+                "type": "query",
+                "description": "The API version to use for this operation"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Validates a template deployment at subscription scope."
+        },
+        {
+          "info": {
+            "name": "Microsoft Bicep Calculate template hash",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://management.azure.com/providers/Microsoft.Resources/calculateTemplateHash",
+            "params": [
+              {
+                "name": "api-version",
+                "value": "",
+                "type": "query",
+                "description": "The API version to use for this operation"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Calculate the hash of the given ARM/Bicep compiled template."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
