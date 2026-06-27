@@ -31,7 +31,7 @@ apis:
       - type: Bicep Playground
         url: https://bicepdemo.z22.web.core.windows.net/
     contact:
-      - type: GitHub Issues
+      - type: GitHubIssues
         url: https://github.com/Azure/bicep/issues
       - type: Twitter
         url: https://twitter.com/Azure
