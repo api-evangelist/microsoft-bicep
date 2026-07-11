@@ -78,6 +78,12 @@ maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
 common:
+  - type: VulnerabilityDisclosure
+    url: security/microsoft-bicep-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/microsoft-bicep-domain-security.yml
+  - type: Authentication
+    url: authentication/microsoft-bicep-authentication.yml
   - type: OAuthScopes
     url: scopes/microsoft-bicep-scopes.yml
   - type: GitHubOrganization
