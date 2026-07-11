@@ -78,6 +78,8 @@ maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
 common:
+  - type: OAuthScopes
+    url: scopes/microsoft-bicep-scopes.yml
   - type: GitHubOrganization
     url: https://github.com/Azure
   - type: Blog
