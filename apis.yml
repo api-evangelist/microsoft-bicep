@@ -78,6 +78,8 @@ maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
 common:
+  - type: AgenticAccess
+    url: agentic-access/microsoft-bicep-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/microsoft-bicep-vulnerability-disclosure.yml
   - type: DomainSecurity
