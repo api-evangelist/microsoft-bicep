@@ -1,0 +1,18 @@
+{
+  "provider": "microsoft-bicep",
+  "sources": [
+    "microsoft-bicep-deployments-api-openapi.yml",
+    "microsoft-bicep-template-spec-versions-api-openapi.yml",
+    "microsoft-bicep-template-specs-api-openapi.yml"
+  ],
+  "outputs": [
+    "microsoft-bicep-deployments-api-openapi.yml",
+    "microsoft-bicep-template-spec-versions-api-openapi.yml",
+    "microsoft-bicep-template-specs-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
