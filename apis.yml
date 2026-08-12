@@ -114,6 +114,10 @@ maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
 common:
+  - type: SecurityPolicy
+    url: https://github.com/Azure/bicep/blob/main/SECURITY.md
+  - type: CodeOfConduct
+    url: https://github.com/Azure/bicep/blob/main/CODE_OF_CONDUCT.md
   - type: AgenticAccess
     url: agentic-access/microsoft-bicep-agentic-access.yml
   - type: VulnerabilityDisclosure
