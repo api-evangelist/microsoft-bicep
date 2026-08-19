@@ -1,0 +1,198 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Microsoft Bicep Deployments Template Spec Versions API",
+    "version": "2025-04-01"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "https://login.microsoftonline.com/common/oauth2/authorize",
+      "credentials": {
+        "clientId": "{{clientId}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Template Spec Versions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Microsoft Bicep Get a Template Spec version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://management.azure.com/subscriptions/:subscriptionId/resourceGroups/:resourceGroupName/providers/Microsoft.Resources/templateSpecs/:templateSpecName/versions/:templateSpecVersion",
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "Subscription ID which forms part of the URI for every service call"
+              },
+              {
+                "name": "resourceGroupName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the resource group. The name is case insensitive."
+              },
+              {
+                "name": "templateSpecName",
+                "value": "",
+                "type": "path",
+                "description": "Name of the Template Spec"
+              },
+              {
+                "name": "templateSpecVersion",
+                "value": "",
+                "type": "path",
+                "description": "The version of the Template Spec"
+              },
+              {
+                "name": "api-version",
+                "value": "",
+                "type": "query",
+                "description": "Client API version"
+              }
+            ]
+          },
+          "docs": "Gets a Template Spec version by name."
+        },
+        {
+          "info": {
+            "name": "Microsoft Bicep Create or update a Template Spec version",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://management.azure.com/subscriptions/:subscriptionId/resourceGroups/:resourceGroupName/providers/Microsoft.Resources/templateSpecs/:templateSpecName/versions/:templateSpecVersion",
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "Subscription ID which forms part of the URI for every service call"
+              },
+              {
+                "name": "resourceGroupName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the resource group. The name is case insensitive."
+              },
+              {
+                "name": "templateSpecName",
+                "value": "",
+                "type": "path",
+                "description": "Name of the Template Spec"
+              },
+              {
+                "name": "templateSpecVersion",
+                "value": "",
+                "type": "path",
+                "description": "The version of the Template Spec"
+              },
+              {
+                "name": "api-version",
+                "value": "",
+                "type": "query",
+                "description": "Client API version"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or updates a version of a Template Spec. Each version contains the actual compiled Bicep/ARM template content."
+        },
+        {
+          "info": {
+            "name": "Microsoft Bicep Delete a Template Spec version",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://management.azure.com/subscriptions/:subscriptionId/resourceGroups/:resourceGroupName/providers/Microsoft.Resources/templateSpecs/:templateSpecName/versions/:templateSpecVersion",
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "Subscription ID which forms part of the URI for every service call"
+              },
+              {
+                "name": "resourceGroupName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the resource group. The name is case insensitive."
+              },
+              {
+                "name": "templateSpecName",
+                "value": "",
+                "type": "path",
+                "description": "Name of the Template Spec"
+              },
+              {
+                "name": "templateSpecVersion",
+                "value": "",
+                "type": "path",
+                "description": "The version of the Template Spec"
+              },
+              {
+                "name": "api-version",
+                "value": "",
+                "type": "query",
+                "description": "Client API version"
+              }
+            ]
+          },
+          "docs": "Deletes a specific version from a Template Spec."
+        },
+        {
+          "info": {
+            "name": "Microsoft Bicep List Template Spec versions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://management.azure.com/subscriptions/:subscriptionId/resourceGroups/:resourceGroupName/providers/Microsoft.Resources/templateSpecs/:templateSpecName/versions",
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "Subscription ID which forms part of the URI for every service call"
+              },
+              {
+                "name": "resourceGroupName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the resource group. The name is case insensitive."
+              },
+              {
+                "name": "templateSpecName",
+                "value": "",
+                "type": "path",
+                "description": "Name of the Template Spec"
+              },
+              {
+                "name": "api-version",
+                "value": "",
+                "type": "query",
+                "description": "Client API version"
+              }
+            ]
+          },
+          "docs": "Lists all the versions of a Template Spec."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
