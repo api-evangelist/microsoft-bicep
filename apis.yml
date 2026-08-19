@@ -20,7 +20,7 @@ image: https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/media
 url: https://github.com/Azure/bicep
 created: '2024-01-15'
 modified: '2026-05-19'
-specificationVersion: '0.18'
+specificationVersion: '0.23'
 tags:
   - ARM Templates
   - Azure
