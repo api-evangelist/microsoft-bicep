@@ -3,6 +3,18 @@ description: >-
   Microsoft Bicep is a domain-specific language (DSL) that uses declarative syntax to deploy Azure resources. It
   provides a transparent abstraction over ARM templates and offers a more concise syntax, improved type safety, and
   better support for modularity and code reuse.
+deliveryModel:
+  model: unknown
+  open_source: unknown
+  commercial: false
+  callable_host: true
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - openapi
+  - repository-unlicensed
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
