@@ -34,7 +34,7 @@ created: '2024-01-15'
 modified: '2026-05-19'
 specificationVersion: '0.23'
 tags:
-  - ArmTemplates
+  - ARM Templates
   - Azure
   - Cloud
   - Deployment
