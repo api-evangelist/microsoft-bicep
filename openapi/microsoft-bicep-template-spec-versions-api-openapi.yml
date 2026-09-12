@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Bicep Deployments Template Spec Versions API
   description: Azure Resource Manager Deployments REST API used by Microsoft Bicep to deploy infrastructure as code templates. Provides operations for creating, validating, and managing ARM/Bicep template deployments at resource group, subscription, management group, and tenant scopes.
@@ -133,11 +133,18 @@ paths:
                 $ref: '#/components/schemas/TemplateSpecsError'
 components:
   schemas:
-    TemplateSpecsError:
+    LinkedTemplateArtifact:
       type: object
+      required:
+      - path
+      - template
       properties:
-        error:
-          $ref: '#/components/schemas/ErrorResponse'
+        path:
+          type: string
+          description: A filesystem safe relative path of the artifact
+        template:
+          type: object
+          description: The ARM/Bicep compiled template content
     ErrorResponse:
       type: object
       properties:
@@ -167,64 +174,6 @@ components:
                 type: object
                 description: The additional info
           description: The error additional info
-    LinkedTemplateArtifact:
-      type: object
-      required:
-      - path
-      - template
-      properties:
-        path:
-          type: string
-          description: A filesystem safe relative path of the artifact
-        template:
-          type: object
-          description: The ARM/Bicep compiled template content
-    SystemData:
-      type: object
-      properties:
-        createdBy:
-          type: string
-          description: The identity that created the resource
-        createdByType:
-          type: string
-          enum:
-          - User
-          - Application
-          - ManagedIdentity
-          - Key
-          description: The type of identity that created the resource
-        createdAt:
-          type: string
-          format: date-time
-          description: The timestamp of resource creation (UTC)
-        lastModifiedBy:
-          type: string
-          description: The identity that last modified the resource
-        lastModifiedByType:
-          type: string
-          enum:
-          - User
-          - Application
-          - ManagedIdentity
-          - Key
-          description: The type of identity that last modified the resource
-        lastModifiedAt:
-          type: string
-          format: date-time
-          description: The timestamp of resource last modification (UTC)
-    TemplateSpecVersionListResult:
-      type: object
-      properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/TemplateSpecVersionModel'
-          description: Array of Template Spec versions
-        nextLink:
-          type: string
-          format: uri
-          readOnly: true
-          description: URL to get the next set of results
     TemplateSpecVersionModel:
       type: object
       required:
@@ -276,12 +225,71 @@ components:
             uiFormDefinition:
               type: object
               description: The Azure Resource Manager template UI definition content. This can be used to customize the portal deployment experience.
+    TemplateSpecsError:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
+    SystemData:
+      type: object
+      properties:
+        createdBy:
+          type: string
+          description: The identity that created the resource
+        createdByType:
+          type: string
+          enum:
+          - User
+          - Application
+          - ManagedIdentity
+          - Key
+          description: The type of identity that created the resource
+        createdAt:
+          type: string
+          format: date-time
+          description: The timestamp of resource creation (UTC)
+        lastModifiedBy:
+          type: string
+          description: The identity that last modified the resource
+        lastModifiedByType:
+          type: string
+          enum:
+          - User
+          - Application
+          - ManagedIdentity
+          - Key
+          description: The type of identity that last modified the resource
+        lastModifiedAt:
+          type: string
+          format: date-time
+          description: The timestamp of resource last modification (UTC)
+    TemplateSpecVersionListResult:
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateSpecVersionModel'
+          description: Array of Template Spec versions
+        nextLink:
+          type: string
+          format: uri
+          readOnly: true
+          description: URL to get the next set of results
   parameters:
-    templateSpecName:
-      name: templateSpecName
+    apiVersion:
+      name: api-version
+      in: query
+      required: true
+      description: Client API version
+      schema:
+        type: string
+        default: '2021-05-01'
+    resourceGroupName:
+      name: resourceGroupName
       in: path
       required: true
-      description: Name of the Template Spec
+      description: The name of the resource group. The name is case insensitive.
       schema:
         type: string
         minLength: 1
@@ -294,24 +302,16 @@ components:
       description: Subscription ID which forms part of the URI for every service call
       schema:
         type: string
-    resourceGroupName:
-      name: resourceGroupName
+    templateSpecName:
+      name: templateSpecName
       in: path
       required: true
-      description: The name of the resource group. The name is case insensitive.
+      description: Name of the Template Spec
       schema:
         type: string
         minLength: 1
         maxLength: 90
         pattern: ^[-\w\.\_\(\)]+$
-    apiVersion:
-      name: api-version
-      in: query
-      required: true
-      description: Client API version
-      schema:
-        type: string
-        default: '2021-05-01'
     templateSpecVersion:
       name: templateSpecVersion
       in: path

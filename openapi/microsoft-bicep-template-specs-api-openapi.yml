@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Microsoft Bicep Deployments Template Specs API
   description: Azure Resource Manager Deployments REST API used by Microsoft Bicep to deploy infrastructure as code templates. Provides operations for creating, validating, and managing ARM/Bicep template deployments at resource group, subscription, management group, and tenant scopes.
@@ -202,11 +202,27 @@ paths:
                 $ref: '#/components/schemas/TemplateSpecsError'
 components:
   schemas:
-    TemplateSpecsError:
+    TemplateSpecListResult:
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/ErrorResponse'
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateSpec'
+          description: Array of Template Specs
+        nextLink:
+          type: string
+          format: uri
+          readOnly: true
+          description: URL to get the next set of results
+    TemplateSpecUpdateModel:
+      type: object
+      properties:
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+          description: Resource tags
     ErrorResponse:
       type: object
       properties:
@@ -252,47 +268,6 @@ components:
           format: date-time
           readOnly: true
           description: The timestamp of when the version was last modified
-    TemplateSpecUpdateModel:
-      type: object
-      properties:
-        tags:
-          type: object
-          additionalProperties:
-            type: string
-          description: Resource tags
-    SystemData:
-      type: object
-      properties:
-        createdBy:
-          type: string
-          description: The identity that created the resource
-        createdByType:
-          type: string
-          enum:
-          - User
-          - Application
-          - ManagedIdentity
-          - Key
-          description: The type of identity that created the resource
-        createdAt:
-          type: string
-          format: date-time
-          description: The timestamp of resource creation (UTC)
-        lastModifiedBy:
-          type: string
-          description: The identity that last modified the resource
-        lastModifiedByType:
-          type: string
-          enum:
-          - User
-          - Application
-          - ManagedIdentity
-          - Key
-          description: The type of identity that last modified the resource
-        lastModifiedAt:
-          type: string
-          format: date-time
-          description: The timestamp of resource last modification (UTC)
     TemplateSpec:
       type: object
       required:
@@ -340,25 +315,58 @@ components:
               additionalProperties:
                 $ref: '#/components/schemas/TemplateSpecVersionInfo'
               description: High-level information about the versions within this Template Spec. Only populated if $expand query parameter is set to 'versions'.
-    TemplateSpecListResult:
+    TemplateSpecsError:
       type: object
       properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/TemplateSpec'
-          description: Array of Template Specs
-        nextLink:
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
+    SystemData:
+      type: object
+      properties:
+        createdBy:
           type: string
-          format: uri
-          readOnly: true
-          description: URL to get the next set of results
+          description: The identity that created the resource
+        createdByType:
+          type: string
+          enum:
+          - User
+          - Application
+          - ManagedIdentity
+          - Key
+          description: The type of identity that created the resource
+        createdAt:
+          type: string
+          format: date-time
+          description: The timestamp of resource creation (UTC)
+        lastModifiedBy:
+          type: string
+          description: The identity that last modified the resource
+        lastModifiedByType:
+          type: string
+          enum:
+          - User
+          - Application
+          - ManagedIdentity
+          - Key
+          description: The type of identity that last modified the resource
+        lastModifiedAt:
+          type: string
+          format: date-time
+          description: The timestamp of resource last modification (UTC)
   parameters:
-    templateSpecName:
-      name: templateSpecName
+    apiVersion:
+      name: api-version
+      in: query
+      required: true
+      description: Client API version
+      schema:
+        type: string
+        default: '2021-05-01'
+    resourceGroupName:
+      name: resourceGroupName
       in: path
       required: true
-      description: Name of the Template Spec
+      description: The name of the resource group. The name is case insensitive.
       schema:
         type: string
         minLength: 1
@@ -371,24 +379,16 @@ components:
       description: Subscription ID which forms part of the URI for every service call
       schema:
         type: string
-    resourceGroupName:
-      name: resourceGroupName
+    templateSpecName:
+      name: templateSpecName
       in: path
       required: true
-      description: The name of the resource group. The name is case insensitive.
+      description: Name of the Template Spec
       schema:
         type: string
         minLength: 1
         maxLength: 90
         pattern: ^[-\w\.\_\(\)]+$
-    apiVersion:
-      name: api-version
-      in: query
-      required: true
-      description: Client API version
-      schema:
-        type: string
-        default: '2021-05-01'
   securitySchemes:
     azure_auth:
       type: oauth2

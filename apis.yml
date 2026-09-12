@@ -135,6 +135,8 @@ maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
 common:
+  - type: Website
+    url: https://www.microsoft.com/
   - type: SecurityPolicy
     url: https://github.com/Azure/bicep/blob/main/SECURITY.md
   - type: CodeOfConduct
@@ -178,3 +180,5 @@ include:
     url: https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs
   - name: Azure Container Registry (for Bicep modules)
     url: https://azure.microsoft.com/en-us/services/container-registry/
+x-parent: microsoft
+x-relationship: product
