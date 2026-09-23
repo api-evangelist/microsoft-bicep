@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Microsoft Bicep Deployments Template Specs API
-  description: Azure Resource Manager Deployments REST API used by Microsoft Bicep to deploy infrastructure as code templates. Provides operations for creating, validating, and managing ARM/Bicep template deployments at resource group, subscription, management group, and tenant scopes.
-  version: '2025-04-01'
+  title: Microsoft Bicep Template Specs API
+  description: Azure Resource Manager Template Specs REST API used by Microsoft Bicep for publishing and managing reusable infrastructure templates. Template Specs allow you to store ARM/Bicep templates as Azure resources for versioning, sharing, and access control across your organization.
+  version: '2021-05-01'
   contact:
     name: Microsoft Azure Support
     url: https://azure.microsoft.com/en-us/support/
@@ -202,19 +202,6 @@ paths:
                 $ref: '#/components/schemas/TemplateSpecsError'
 components:
   schemas:
-    TemplateSpecListResult:
-      type: object
-      properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/TemplateSpec'
-          description: Array of Template Specs
-        nextLink:
-          type: string
-          format: uri
-          readOnly: true
-          description: URL to get the next set of results
     TemplateSpecUpdateModel:
       type: object
       properties:
@@ -223,51 +210,6 @@ components:
           additionalProperties:
             type: string
           description: Resource tags
-    ErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: The error code
-        message:
-          type: string
-          description: The error message
-        target:
-          type: string
-          description: The error target
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorResponse'
-          description: The error details
-        additionalInfo:
-          type: array
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                description: The additional info type
-              info:
-                type: object
-                description: The additional info
-          description: The error additional info
-    TemplateSpecVersionInfo:
-      type: object
-      properties:
-        description:
-          type: string
-          description: Template Spec version description
-        timeCreated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The timestamp of when the version was created
-        timeModified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The timestamp of when the version was last modified
     TemplateSpec:
       type: object
       required:
@@ -315,6 +257,35 @@ components:
               additionalProperties:
                 $ref: '#/components/schemas/TemplateSpecVersionInfo'
               description: High-level information about the versions within this Template Spec. Only populated if $expand query parameter is set to 'versions'.
+    TemplateSpecVersionInfo:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Template Spec version description
+        timeCreated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The timestamp of when the version was created
+        timeModified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The timestamp of when the version was last modified
+    TemplateSpecListResult:
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateSpec'
+          description: Array of Template Specs
+        nextLink:
+          type: string
+          format: uri
+          readOnly: true
+          description: URL to get the next set of results
     TemplateSpecsError:
       type: object
       properties:
@@ -353,6 +324,35 @@ components:
           type: string
           format: date-time
           description: The timestamp of resource last modification (UTC)
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The error code
+        message:
+          type: string
+          description: The error message
+        target:
+          type: string
+          description: The error target
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponse'
+          description: The error details
+        additionalInfo:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: The additional info type
+              info:
+                type: object
+                description: The additional info
+          description: The error additional info
   parameters:
     apiVersion:
       name: api-version
@@ -362,16 +362,6 @@ components:
       schema:
         type: string
         default: '2021-05-01'
-    resourceGroupName:
-      name: resourceGroupName
-      in: path
-      required: true
-      description: The name of the resource group. The name is case insensitive.
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 90
-        pattern: ^[-\w\.\_\(\)]+$
     subscriptionId:
       name: subscriptionId
       in: path
@@ -389,6 +379,16 @@ components:
         minLength: 1
         maxLength: 90
         pattern: ^[-\w\.\_\(\)]+$
+    resourceGroupName:
+      name: resourceGroupName
+      in: path
+      required: true
+      description: The name of the resource group. The name is case insensitive.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90
+        pattern: ^[-\w\.\_\(\)]+$
   securitySchemes:
     azure_auth:
       type: oauth2
@@ -399,5 +399,5 @@ components:
           scopes:
             user_impersonation: Impersonate your user account
 externalDocs:
-  description: Azure Resource Manager Deployments API Documentation
-  url: https://learn.microsoft.com/en-us/rest/api/resources/deployments
+  description: Azure Template Specs API Documentation
+  url: https://learn.microsoft.com/en-us/rest/api/resources/template-specs

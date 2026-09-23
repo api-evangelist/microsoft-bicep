@@ -1,9 +1,8 @@
 {
   "provider": "microsoft-bicep",
   "sources": [
-    "microsoft-bicep-deployments-api-openapi.yml",
-    "microsoft-bicep-template-spec-versions-api-openapi.yml",
-    "microsoft-bicep-template-specs-api-openapi.yml"
+    "_original/microsoft-bicep-deployments-openapi.yml",
+    "_original/microsoft-bicep-template-specs-openapi.yml"
   ],
   "outputs": [
     "microsoft-bicep-deployments-api-openapi.yml",
@@ -14,10 +13,14 @@
   "errors": [],
   "warnings": [],
   "notes": [
-    "microsoft-bicep-deployments-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "microsoft-bicep-template-spec-versions-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "microsoft-bicep-template-specs-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "microsoft-bicep-deployments-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "microsoft-bicep-template-specs-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "microsoft-bicep-deployments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-bicep-template-spec-versions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-bicep-template-specs-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
