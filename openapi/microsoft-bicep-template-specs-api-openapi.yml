@@ -202,30 +202,6 @@ paths:
                 $ref: '#/components/schemas/TemplateSpecsError'
 components:
   schemas:
-    TemplateSpecVersionInfo:
-      type: object
-      properties:
-        description:
-          type: string
-          description: Template Spec version description
-        timeCreated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The timestamp of when the version was created
-        timeModified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The timestamp of when the version was last modified
-    TemplateSpecUpdateModel:
-      type: object
-      properties:
-        tags:
-          type: object
-          additionalProperties:
-            type: string
-          description: Resource tags
     TemplateSpecListResult:
       type: object
       properties:
@@ -239,73 +215,6 @@ components:
           format: uri
           readOnly: true
           description: URL to get the next set of results
-    TemplateSpecsError:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorResponse'
-    ErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: The error code
-        message:
-          type: string
-          description: The error message
-        target:
-          type: string
-          description: The error target
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorResponse'
-          description: The error details
-        additionalInfo:
-          type: array
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                description: The additional info type
-              info:
-                type: object
-                description: The additional info
-          description: The error additional info
-    SystemData:
-      type: object
-      properties:
-        createdBy:
-          type: string
-          description: The identity that created the resource
-        createdByType:
-          type: string
-          enum:
-          - User
-          - Application
-          - ManagedIdentity
-          - Key
-          description: The type of identity that created the resource
-        createdAt:
-          type: string
-          format: date-time
-          description: The timestamp of resource creation (UTC)
-        lastModifiedBy:
-          type: string
-          description: The identity that last modified the resource
-        lastModifiedByType:
-          type: string
-          enum:
-          - User
-          - Application
-          - ManagedIdentity
-          - Key
-          description: The type of identity that last modified the resource
-        lastModifiedAt:
-          type: string
-          format: date-time
-          description: The timestamp of resource last modification (UTC)
     TemplateSpec:
       type: object
       required:
@@ -353,17 +262,98 @@ components:
               additionalProperties:
                 $ref: '#/components/schemas/TemplateSpecVersionInfo'
               description: High-level information about the versions within this Template Spec. Only populated if $expand query parameter is set to 'versions'.
+    TemplateSpecsError:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
+    SystemData:
+      type: object
+      properties:
+        createdBy:
+          type: string
+          description: The identity that created the resource
+        createdByType:
+          type: string
+          enum:
+          - User
+          - Application
+          - ManagedIdentity
+          - Key
+          description: The type of identity that created the resource
+        createdAt:
+          type: string
+          format: date-time
+          description: The timestamp of resource creation (UTC)
+        lastModifiedBy:
+          type: string
+          description: The identity that last modified the resource
+        lastModifiedByType:
+          type: string
+          enum:
+          - User
+          - Application
+          - ManagedIdentity
+          - Key
+          description: The type of identity that last modified the resource
+        lastModifiedAt:
+          type: string
+          format: date-time
+          description: The timestamp of resource last modification (UTC)
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The error code
+        message:
+          type: string
+          description: The error message
+        target:
+          type: string
+          description: The error target
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponse'
+          description: The error details
+        additionalInfo:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: The additional info type
+              info:
+                type: object
+                description: The additional info
+          description: The error additional info
+    TemplateSpecVersionInfo:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Template Spec version description
+        timeCreated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The timestamp of when the version was created
+        timeModified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The timestamp of when the version was last modified
+    TemplateSpecUpdateModel:
+      type: object
+      properties:
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+          description: Resource tags
   parameters:
-    templateSpecName:
-      name: templateSpecName
-      in: path
-      required: true
-      description: Name of the Template Spec
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 90
-        pattern: ^[-\w\.\_\(\)]+$
     apiVersion:
       name: api-version
       in: query
@@ -389,6 +379,16 @@ components:
       description: Subscription ID which forms part of the URI for every service call
       schema:
         type: string
+    templateSpecName:
+      name: templateSpecName
+      in: path
+      required: true
+      description: Name of the Template Spec
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90
+        pattern: ^[-\w\.\_\(\)]+$
   securitySchemes:
     azure_auth:
       type: oauth2
