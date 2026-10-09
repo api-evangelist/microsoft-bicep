@@ -102,3 +102,38 @@ maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
     url: https://github.com/Azure/bicep
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  - metered
+  - subscription
+  units:
+  - negotiated
+  - period
+  plans:
+  - name: Bicep CLI / Language (Free + Open Source)
+    access: freemium
+    model: free
+    model_how: derived
+    units:
+    - other
+    periods:
+    - per-use
+  - name: Underlying Azure Resources (Pass-Through)
+    access: other
+    model: metered
+    model_how: stated
+    units:
+    - negotiated
+    periods:
+    - per-use
+  - name: Microsoft Customer Support (Optional)
+    access: enterprise
+    model: subscription
+    model_how: derived
+    units:
+    - period
+    periods:
+    - month
