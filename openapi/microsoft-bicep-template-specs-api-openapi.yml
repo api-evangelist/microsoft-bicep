@@ -202,6 +202,11 @@ paths:
                 $ref: '#/components/schemas/TemplateSpecsError'
 components:
   schemas:
+    TemplateSpecsError:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
     SystemData:
       type: object
       properties:
@@ -235,19 +240,6 @@ components:
           type: string
           format: date-time
           description: The timestamp of resource last modification (UTC)
-    TemplateSpecListResult:
-      type: object
-      properties:
-        value:
-          type: array
-          items:
-            $ref: '#/components/schemas/TemplateSpec'
-          description: Array of Template Specs
-        nextLink:
-          type: string
-          format: uri
-          readOnly: true
-          description: URL to get the next set of results
     TemplateSpec:
       type: object
       required:
@@ -295,35 +287,19 @@ components:
               additionalProperties:
                 $ref: '#/components/schemas/TemplateSpecVersionInfo'
               description: High-level information about the versions within this Template Spec. Only populated if $expand query parameter is set to 'versions'.
-    TemplateSpecsError:
+    TemplateSpecListResult:
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/ErrorResponse'
-    TemplateSpecUpdateModel:
-      type: object
-      properties:
-        tags:
-          type: object
-          additionalProperties:
-            type: string
-          description: Resource tags
-    TemplateSpecVersionInfo:
-      type: object
-      properties:
-        description:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateSpec'
+          description: Array of Template Specs
+        nextLink:
           type: string
-          description: Template Spec version description
-        timeCreated:
-          type: string
-          format: date-time
+          format: uri
           readOnly: true
-          description: The timestamp of when the version was created
-        timeModified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The timestamp of when the version was last modified
+          description: URL to get the next set of results
     ErrorResponse:
       type: object
       properties:
@@ -353,32 +329,31 @@ components:
                 type: object
                 description: The additional info
           description: The error additional info
+    TemplateSpecUpdateModel:
+      type: object
+      properties:
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+          description: Resource tags
+    TemplateSpecVersionInfo:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Template Spec version description
+        timeCreated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The timestamp of when the version was created
+        timeModified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The timestamp of when the version was last modified
   parameters:
-    subscriptionId:
-      name: subscriptionId
-      in: path
-      required: true
-      description: Subscription ID which forms part of the URI for every service call
-      schema:
-        type: string
-    apiVersion:
-      name: api-version
-      in: query
-      required: true
-      description: Client API version
-      schema:
-        type: string
-        default: '2021-05-01'
-    templateSpecName:
-      name: templateSpecName
-      in: path
-      required: true
-      description: Name of the Template Spec
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 90
-        pattern: ^[-\w\.\_\(\)]+$
     resourceGroupName:
       name: resourceGroupName
       in: path
@@ -389,6 +364,31 @@ components:
         minLength: 1
         maxLength: 90
         pattern: ^[-\w\.\_\(\)]+$
+    templateSpecName:
+      name: templateSpecName
+      in: path
+      required: true
+      description: Name of the Template Spec
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90
+        pattern: ^[-\w\.\_\(\)]+$
+    apiVersion:
+      name: api-version
+      in: query
+      required: true
+      description: Client API version
+      schema:
+        type: string
+        default: '2021-05-01'
+    subscriptionId:
+      name: subscriptionId
+      in: path
+      required: true
+      description: Subscription ID which forms part of the URI for every service call
+      schema:
+        type: string
   securitySchemes:
     azure_auth:
       type: oauth2
